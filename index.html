@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Empanadas Regocijo | Tradición Artesanal y Sabor Único</title>
+  <style>
+    :root {
+      --primary: #c2410c;
+      --primary-dark: #9a3412;
+      --accent: #f59e0b;
+      --accent-light: #fef3c7;
+      --dark: #1c1917;
+      --gray-light: #f8fafc;
+      --text: #44403c;
+      --white: #ffffff;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    body {
+      background-color: var(--gray-light);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* HEADER & NAVEGACIÓN */
+    header {
+      background: var(--white);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--dark);
+    }
+
+    .brand-icon {
+      background: var(--primary);
+      color: var(--white);
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 20px;
+    }
+
+    .brand-text h1 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+      color: var(--dark);
+    }
+
+    .brand-text span {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .nav-cta {
+      background: var(--primary);
+      color: var(--white);
+      padding: 10px 18px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .nav-cta:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    /* HERO SECTION */
+    .hero {
+      background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+      padding: 60px 20px 80px;
+      text-align: center;
+      border-bottom: 1px solid #fed7aa;
+    }
+
+    .hero-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .badge-hero {
+      display: inline-block;
+      background: #ffedd5;
+      color: var(--primary-dark);
+      font-weight: 700;
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      border: 1px solid #fdba74;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .hero h2 {
+      font-size: 42px;
+      font-weight: 900;
+      color: var(--dark);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: #78716c;
+      margin-bottom: 28px;
+    }
+
+    .hero-features {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .feature-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    /* SECCIÓN DE PRODUCTOS / MENÚ */
+    .section-menu {
+      max-width: 1200px;
+      margin: -30px auto 60px;
+      padding: 0 20px;
+    }
+
+    .menu-header {
+      background: var(--white);
+      padding: 20px 24px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .menu-header h3 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--dark);
+    }
+
+    .grid-empanadas {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid #f1f5f9;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+
+    .card-img-wrapper {
+      position: relative;
+      height: 180px;
+      background: #fed7aa;
+      overflow: hidden;
+    }
+
+    .card-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(28, 25, 23, 0.85);
+      backdrop-filter: blur(4px);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .card-body {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: #78716c;
+      margin-bottom: 16px;
+      flex: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid #f3f4f6;
+    }
+
+    .price {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .btn-add {
+      background: var(--dark);
+      color: var(--white);
+      border: none;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn-add:hover {
+      background: var(--primary);
+    }
+
+    /* BARRA FLOTANTE DE PEDIDO / CHECKOUT */
+    .cart-bar {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--dark);
+      color: var(--white);
+      padding: 12px 24px;
+      border-radius: 50px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      z-index: 99;
+      width: 90%;
+      max-width: 600px;
+      transition: all 0.3s;
+    }
+
+    .cart-summary {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart-count {
+      font-size: 13px;
+      color: #a8a29e;
+      font-weight: 600;
+    }
+
+    .cart-total {
+      font-size: 19px;
+      font-weight: 900;
+      color: var(--accent);
+    }
+
+    .btn-order {
+      background: #25d366;
+      color: var(--white);
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-weight: 800;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+
+    .btn-order:hover {
+      background: #1eb857;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark);
+      color: #a8a29e;
+      padding: 40px 20px 100px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    footer p {
+      margin-bottom: 8px;
+    }
+
+    footer strong {
+      color: var(--white);
+    }
+
+    @media (max-width: 640px) {
+      .hero h2 { font-size: 30px; }
+      .hero p { font-size: 15px; }
+      .cart-bar { flex-direction: column; gap: 10px; border-radius: 20px; text-align: center; }
+      .cart-summary { align-items: center; }
+      .btn-order { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="brand">
+        <div class="brand-icon">🥟</div>
+        <div class="brand-text">
+          <h1>Empanadas Regocijo</h1>
+          <span>Horneadas al Momento</span>
+        </div>
+      </a>
+      <a href="#menu" class="nav-cta">Pedir Ahora</a>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-container">
+      <span class="badge-hero">Masa casera extra crujiente & relleno jugoso</span>
+      <h2>Sabor que te alegra el día en cada bocado</h2>
+      <p>Elaboradas con recetas tradicionales, ingredientes selectos y horneadas a la perfección para que disfrutes calientito.</p>
+      
+      <div class="hero-features">
+        <div class="feature-pill">🔥 100% Horneadas</div>
+        <div class="feature-pill">🥩 Cortes Premium</div>
+        <div class="feature-pill">⚡ Entrega Inmediata</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENÚ / PRODUCTOS -->
+  <section class="section-menu" id="menu">
+    <div class="menu-header">
+      <div>
+        <h3>Nuestras Variedades</h3>
+        <p style="font-size: 13px; color: #78716c;">Elige tus favoritas y envíanos tu pedido con un solo clic.</p>
+      </div>
+      <button onclick="vaciarCarrito()" style="background:none; border:none; color: var(--primary); font-weight:700; cursor:pointer; font-size:13px;">
+        Restablecer selección
+      </button>
+    </div>
+
+    <div class="grid-empanadas">
+      
+      <!-- PRODUCTO 1 -->
+      <article class="card">
+        <div class="card-img-wrapper">
+          <span class="card-tag">Favorita de la casa</span>
+          <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=600&q=80" alt="Empanada de Carne Tradicional">
+        </div>
+        <div class="card-body">
+          <h4 class="card-title">Carne Clásica Cortada</h4>
+          <p class="card-desc">Lomo fino trozado a cuchillo, cebolla caramelizada, huevo duro, aceituna y toque andino de especias.</p>
+          <div class="card-footer">
+            <span class="price">S/ 6.50</span>
+            <button class="btn-add" onclick="agregar('Carne Clásica', 6.50)">+ Agregar</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- PRODUCTO 2 -->
+      <article class="card">
+        <div class="card-img-wrapper">
+          <span class="card-tag">Súper Jugosa</span>
+          <img src="https://images.unsplash.com/photo-1608039829572-78524f79c4c7?auto=format&fit=crop&w=600&q=80" alt="Empanada de Ají de Gallina">
+        </div>
+        <div class="card-body">
+          <h4 class="card-title">Ají de Gallina</h4>
+          <p class="card-desc">Cremoso guiso tradicional con pechuga deshilachada, ají amarillo aromático, queso paria y pecanas.</p>
+          <div class="card-footer">
+            <span class="price">S/ 6.50</span>
+            <button class="btn-add" onclick="agregar('Ají de Gallina', 6.50)">+ Agregar</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- PRODUCTO 3 -->
+      <article class="card">
+        <div class="card-img-wrapper">
+          <span class="card-tag">Queso Fundido</span>
+          <img src="https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80" alt="Empanada Cuatro Quesos">
+        </div>
+        <div class="card-body">
+          <h4 class="card-title">Queso Andino & Mozzarella</h4>
+          <p class="card-desc">Combinación cremosa de queso andino madurado con mozzarella y orégano fresco del valle.</p>
+          <div class="card-footer">
+            <span class="price">S/ 6.00</span>
+            <button class="btn-add" onclick="agregar('Queso Andino', 6.00)">+ Agregar</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- PRODUCTO 4 -->
+      <article class="card">
+        <div class="card-img-wrapper">
+          <span class="card-tag">Especial</span>
+          <img src="https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?auto=format&fit=crop&w=600&q=80" alt="Empanada Champiñones">
+        </div>
+        <div class="card-body">
+          <h4 class="card-title">Champiñones al Ajillo</h4>
+          <p class="card-desc">Salteado de champiñones frescos al vino blanco, cebolla glaseada, ajo suave y queso fundido.</p>
+          <div class="card-footer">
+            <span class="price">S/ 7.00</span>
+            <button class="btn-add" onclick="agregar('Champiñones', 7.00)">+ Agregar</button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p><strong>Empanadas Regocijo</strong> · Horneando momentos memorables.</p>
+    <p>Pedidos para eventos, reuniones y entregas al paso.</p>
+    <p style="margin-top: 10px; font-size: 12px; color: #78716c;">© 2026 Empanadas Regocijo. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- BARRA DE PEDIDO FLOTANTE (ESTILO DELIVERY MODERNO) -->
+  <div class="cart-bar" id="cartBar" style="display: none;">
+    <div class="cart-summary">
+      <span class="cart-count" id="cartCount">0 empanadas seleccionadas</span>
+      <span class="cart-total" id="cartTotal">Total: S/ 0.00</span>
+    </div>
+    <button class="btn-order" onclick="enviarPedidoWhatsApp()">
+      <span>Pedir por WhatsApp</span> 💬
+    </button>
+  </div>
+
+  <script>
+    // Configura aquí el número de WhatsApp de tu negocio (incluye código de país, ej. 51 para Perú)
+    const WHATSAPP_NUMERO = "51984000000";
+
+    const pedido = {};
+
+    function agregar(nombre, precio) {
+      if (!pedido[nombre]) {
+        pedido[nombre] = { cantidad: 0, precio: precio };
+      }
+      pedido[nombre].cantidad += 1;
+      actualizarBarra();
+    }
+
+    function vaciarCarrito() {
+      for (const item in pedido) {
+        delete pedido[item];
+      }
+      actualizarBarra();
+    }
+
+    function actualizarBarra() {
+      const cartBar = document.getElementById('cartBar');
+      const cartCount = document.getElementById('cartCount');
+      const cartTotal = document.getElementById('cartTotal');
+
+      let totalUnidades = 0;
+      let totalMonto = 0;
+
+      for (const item in pedido) {
+        totalUnidades += pedido[item].cantidad;
+        totalMonto += pedido[item].cantidad * pedido[item].precio;
+      }
+
+      if (totalUnidades > 0) {
+        cartBar.style.display = 'flex';
+        cartCount.innerText = `${totalUnidades} ${totalUnidades === 1 ? 'empanada seleccionada' : 'empanadas seleccionadas'}`;
+        cartTotal.innerText = `Total: S/ ${totalMonto.toFixed(2)}`;
+      } else {
+        cartBar.style.display = 'none';
+      }
+    }
+
+    function enviarPedidoWhatsApp() {
+      let texto = `*¡Hola Empanadas Regocijo! Deseo hacer un pedido:*%0A%0A`;
+      let totalMonto = 0;
+
+      for (const item in pedido) {
+        const subtotal = pedido[item].cantidad * pedido[item].precio;
+        texto += `• ${pedido[item].cantidad}x ${item} (S/ ${subtotal.toFixed(2)})%0A`;
+        totalMonto += subtotal;
+      }
+
+      texto += `%0A*Total estimado:* S/ ${totalMonto.toFixed(2)}%0A`;
+      texto += `%0APor favor, confírmenme el tiempo de entrega y métodos de pago (Yape/Plin/Efectivo).`;
+
+      const url = `https://wa.me/${WHATSAPP_NUMERO}?text=${texto}`;
+      window.open(url, '_blank');
+    }
+  </script>
+
+</body>
+</html>
