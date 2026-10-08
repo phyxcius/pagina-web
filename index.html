@@ -1,4 +1,5 @@
-
+El motivo por el cual se veía como una barra ancha en lugar de un círculo es que el contenedor mantenía el ancho completo en pantallas móviles.
+Aquí tienes el código completo con el botón flotante circular azul en la esquina inferior derecha idéntico al botón de chat de tu captura, que al presionarse despliega la ventana para seleccionar pagos, activar GPS y enviar la orden a WhatsApp con el formato exacto requerido:
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -14,7 +15,8 @@
       --primary: #c2410c;
       --primary-dark: #9a3412;
       --accent: #f59e0b;
-      --accent-light: #fef3c7;
+      --chat-blue: #2563eb;
+      --chat-blue-hover: #1d4ed8;
       --dark: #1c1917;
       --gray-light: #f8fafc;
       --text: #44403c;
@@ -37,7 +39,7 @@
       padding-bottom: 90px;
     }
 
-    /* HEADER & NAVEGACIÓN */
+    /* HEADER */
     header {
       background: var(--white);
       position: sticky;
@@ -109,7 +111,6 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s;
     }
 
     .btn-admin-login:hover {
@@ -357,105 +358,129 @@
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
-      transition: background 0.2s;
     }
 
     .btn-add:hover {
       background: var(--primary);
     }
 
-    /* POPUP DE CARRITO (ESCRITORIO: BANNER INFERIOR CENTRADO) */
-    .cart-bottom-popup {
+    /* GLOBITO FLOTANTE AZUL PEQUEÑO (INFERIOR DERECHA) */
+    .chat-bubble-btn {
       position: fixed;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 600px;
-      background: var(--white);
-      border-radius: 18px 18px 0 0;
-      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.25);
+      bottom: 24px;
+      right: 24px;
+      width: 60px;
+      height: 60px;
+      background-color: var(--chat-blue);
+      border-radius: 50%;
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
       z-index: 1500;
-      border: 1px solid #fed7aa;
-      border-bottom: none;
+      border: none;
+      transition: transform 0.2s, background-color 0.2s;
     }
 
-    .cart-popup-bar {
+    .chat-bubble-btn:hover {
+      transform: scale(1.08);
+      background-color: var(--chat-blue-hover);
+    }
+
+    .chat-bubble-icon {
+      width: 28px;
+      height: 28px;
+      fill: var(--white);
+    }
+
+    .chat-badge {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      background-color: var(--primary);
+      color: var(--white);
+      border: 2px solid var(--white);
+      font-size: 11px;
+      font-weight: 800;
+      min-width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    /* MODAL DE CHECKOUT QUE SE ABRE AL TOCAR EL GLOBITO */
+    .cart-modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      justify-content: center;
+      align-items: flex-end;
+      padding: 0;
+    }
+
+    .cart-modal-card {
+      background: var(--white);
+      width: 100%;
+      max-width: 500px;
+      border-radius: 20px 20px 0 0;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.25);
+      animation: slideUp 0.25s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .cart-modal-header {
+      padding: 16px 20px;
       background: var(--dark);
       color: var(--white);
-      padding: 14px 20px;
-      border-radius: 17px 17px 0 0;
+      border-radius: 20px 20px 0 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      cursor: pointer;
-      user-select: none;
     }
 
-    .cart-popup-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 15px;
+    .cart-modal-header h3 {
+      font-size: 16px;
       font-weight: 800;
-    }
-
-    .cart-count-pill {
-      background: var(--accent);
-      color: var(--dark);
-      font-size: 12px;
-      font-weight: 900;
-      padding: 2px 9px;
-      border-radius: 12px;
-    }
-
-    .cart-popup-right {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
     }
 
-    .cart-popup-total {
-      font-size: 18px;
-      font-weight: 900;
-      color: var(--accent);
+    .btn-close-cart {
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 24px;
+      cursor: pointer;
     }
 
-    .cart-popup-toggle-icon {
-      font-size: 14px;
-      transition: transform 0.3s;
-    }
-
-    .cart-bottom-popup.open .cart-popup-toggle-icon {
-      transform: rotate(180deg);
-    }
-
-    .cart-popup-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.35s ease-in-out;
-      background: var(--white);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .cart-bottom-popup.open .cart-popup-content {
-      max-height: 75vh;
-      overflow-y: auto;
-    }
-
-    .cart-popup-inner {
+    .cart-modal-body {
       padding: 16px 20px;
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
     .cart-items-box {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      max-height: 200px;
+      max-height: 180px;
       overflow-y: auto;
     }
 
@@ -560,7 +585,7 @@
     }
 
     .btn-geo {
-      background: #2563eb;
+      background: var(--chat-blue);
       color: #fff;
       border: none;
       padding: 8px 12px;
@@ -575,7 +600,7 @@
     }
 
     .btn-geo:hover {
-      background: #1d4ed8;
+      background: var(--chat-blue-hover);
     }
 
     .geo-status {
@@ -589,85 +614,57 @@
       font-weight: bold;
     }
 
+    .cart-modal-footer {
+      padding: 14px 20px;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--dark);
+    }
+
+    .cart-total-amount {
+      color: var(--primary);
+      font-size: 20px;
+    }
+
     .btn-order-wsp {
       background: #25d366;
       color: var(--white);
       padding: 12px;
       border-radius: 10px;
       font-weight: 800;
-      font-size: 15px;
+      font-size: 14px;
       border: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: background 0.2s;
     }
 
     .btn-order-wsp:hover {
       background: #1eb857;
     }
 
-    /* MÓVIL: TRANSFORMAR EL POPUP EN UN GLOBITO FLOTANTE EN LA ESQUINA INFERIOR DERECHA */
     @media (max-width: 600px) {
-      .cart-bottom-popup {
-        left: auto;
-        right: 18px;
-        bottom: 18px;
-        transform: none;
-        width: auto;
-        max-width: none;
-        border-radius: 50px;
-        border: none;
-        box-shadow: none;
-      }
-
-      /* Estilo Globito Redondo */
-      .cart-popup-bar {
-        border-radius: 50px;
-        padding: 12px 18px;
-        box-shadow: 0 10px 25px rgba(194, 65, 12, 0.4);
-        background: var(--primary);
-        gap: 8px;
-      }
-
-      .cart-popup-bar .cart-popup-title span:first-child {
-        font-size: 18px;
-      }
-
-      .cart-popup-bar .cart-count-pill {
-        background: var(--white);
-        color: var(--primary-dark);
-        padding: 2px 7px;
-      }
-
-      .cart-popup-total, .cart-popup-toggle-icon {
-        display: none;
-      }
-
-      /* Cuando se abre en móvil: Ventana emergente flotante */
-      .cart-bottom-popup.open {
-        left: 12px;
-        right: 12px;
-        bottom: 12px;
-        width: auto;
-        border-radius: 16px;
-        box-shadow: 0 10px 35px rgba(0,0,0,0.4);
-      }
-
-      .cart-bottom-popup.open .cart-popup-bar {
-        border-radius: 16px 16px 0 0;
-        background: var(--dark);
-      }
-
-      .cart-bottom-popup.open .cart-popup-total,
-      .cart-bottom-popup.open .cart-popup-toggle-icon {
-        display: block;
-      }
-
       .grid-payments {
         grid-template-columns: repeat(2, 1fr);
+      }
+      .chat-bubble-btn {
+        bottom: 20px;
+        right: 20px;
+        width: 56px;
+        height: 56px;
       }
     }
 
@@ -906,23 +903,24 @@
     <div class="grid-empanadas" id="contenedorEmpanadas"></div>
   </section>
 
-  <!-- POPUP DE CARRITO (RESPONSIVO: BARRA EN PC / GLOBITO EN CELULAR) -->
-  <div class="cart-bottom-popup" id="cartPopup">
-    
-    <div class="cart-popup-bar" onclick="alternarPopupCarrito()">
-      <div class="cart-popup-title">
-        <span>🥟</span>
-        <span class="cart-count-pill" id="popupContadorUnidades">0</span>
-      </div>
-      <div class="cart-popup-right">
-        <span class="cart-popup-total" id="popupTotalBarra">S/ 0.00</span>
-        <span class="cart-popup-toggle-icon" id="popupFlecha">▲</span>
-      </div>
-    </div>
+  <!-- GLOBITO AZUL FLOTANTE EN LA ESQUINA INFERIOR DERECHA -->
+  <button class="chat-bubble-btn" id="btnGlobitoChat" onclick="abrirModalCarrito()">
+    <svg class="chat-bubble-icon" viewBox="0 0 24 24">
+      <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+    </svg>
+    <div class="chat-badge" id="badgeContador">0</div>
+  </button>
 
-    <div class="cart-popup-content" id="popupContent">
-      <div class="cart-popup-inner">
-        
+  <!-- MODAL DE CHECKOUT (SE ABRE AL TOCAR EL GLOBITO AZUL) -->
+  <div class="cart-modal-overlay" id="cartModalOverlay" onclick="cerrarSiClickAfuera(event)">
+    <div class="cart-modal-card">
+      
+      <div class="cart-modal-header">
+        <h3>🥟 Tu Pedido de Empanadas</h3>
+        <button class="btn-close-cart" onclick="cerrarModalCarrito()">&times;</button>
+      </div>
+
+      <div class="cart-modal-body">
         <div>
           <div class="popup-section-label">Empanadas seleccionadas:</div>
           <div class="cart-items-box" id="popupItemsList"></div>
@@ -945,12 +943,18 @@
             <span class="geo-status" id="geoStatus">Envía tus coordenadas para la entrega directa</span>
           </div>
         </div>
+      </div>
 
+      <div class="cart-modal-footer">
+        <div class="cart-total-row">
+          <span>Total a pagar:</span>
+          <span class="cart-total-amount" id="cartTotalMonto">S/ 0.00</span>
+        </div>
         <button class="btn-order-wsp" onclick="enviarPedidoWhatsApp()">
           <span>Confirmar Pedido por WhatsApp</span> 💬
         </button>
-
       </div>
+
     </div>
   </div>
 
@@ -1127,7 +1131,7 @@
     let registroVentas = JSON.parse(localStorage.getItem('regocijo_ventas')) || [];
 
     const pedido = {};
-    let metodoPago = "Efectivo";
+    let metodoPago = "Yape";
     let ubicacionClienteCoords = null;
     let esAdminAutenticado = false;
 
@@ -1257,7 +1261,7 @@
       });
     }
 
-    // CARRITO
+    // GESTIÓN DEL CARRITO
     function agregarAlPedido(id) {
       const prod = catalogo.find(p => p.id === id);
       if (!prod) return;
@@ -1287,9 +1291,18 @@
       actualizarVistaPopup();
     }
 
-    function alternarPopupCarrito() {
-      const popup = document.getElementById('cartPopup');
-      popup.classList.toggle('open');
+    function abrirModalCarrito() {
+      document.getElementById('cartModalOverlay').style.display = 'flex';
+    }
+
+    function cerrarModalCarrito() {
+      document.getElementById('cartModalOverlay').style.display = 'none';
+    }
+
+    function cerrarSiClickAfuera(e) {
+      if (e.target.id === 'cartModalOverlay') {
+        cerrarModalCarrito();
+      }
     }
 
     function actualizarVistaPopup() {
@@ -1327,8 +1340,9 @@
         });
       }
 
-      document.getElementById('popupContadorUnidades').innerText = `${unidades}`;
-      document.getElementById('popupTotalBarra').innerText = `S/ ${total.toFixed(2)}`;
+      // Actualizar el número dentro del globito azul y el total
+      document.getElementById('badgeContador').innerText = `${unidades}`;
+      document.getElementById('cartTotalMonto').innerText = `S/ ${total.toFixed(2)}`;
     }
 
     function elegirPago(metodo, boton) {
@@ -1361,7 +1375,7 @@
       );
     }
 
-    // ENVÍO DEL PEDIDO A WHATSAPP CON EL FORMATO EXACTO SOLICITADO
+    // ENVÍO DE PEDIDO A WHATSAPP
     function enviarPedidoWhatsApp() {
       const keys = Object.keys(pedido);
       if (keys.length === 0) {
@@ -1397,7 +1411,6 @@
       const fechaISO = fechaActual.toISOString().split('T')[0];
       const fechaFormato = fechaActual.toLocaleString();
 
-      // Guardar en la contabilidad
       const nuevaVenta = {
         id: Date.now(),
         fecha: fechaFormato,
@@ -1429,15 +1442,14 @@
 
       mensaje += `\n¿Me confirman tiempo estimado de entrega?`;
 
-      // Redireccionar al número oficial
       const url = `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensaje)}`;
       window.open(url, '_blank');
       
       limpiarCarrito();
-      document.getElementById('cartPopup').classList.remove('open');
+      cerrarModalCarrito();
     }
 
-    // PANEL ADMIN
+    // ADMINISTRACIÓN & DASHBOARD
     function abrirModalAdmin() {
       if (esAdminAutenticado) {
         mostrarDashboard();
