@@ -33,7 +33,7 @@
       background-color: var(--gray-light);
       color: var(--text);
       line-height: 1.6;
-      padding-bottom: 260px;
+      padding-bottom: 90px;
     }
 
     /* HEADER & NAVEGACIÓN */
@@ -363,38 +363,166 @@
       background: var(--primary);
     }
 
-    /* BARRA INFERIOR DE CHECKOUT */
-    .cart-bar {
+    /* BOTÓN FLOTANTE DEL CARRITO (INFERIOR DERECHA) */
+    .cart-floating-btn {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: #1c1917;
+      bottom: 24px;
+      right: 24px;
+      background: var(--primary);
       color: var(--white);
-      padding: 14px 18px;
-      box-shadow: 0 -8px 25px rgba(0,0,0,0.3);
-      z-index: 1000;
-      display: none;
+      border: none;
+      border-radius: 50px;
+      padding: 14px 22px;
+      font-size: 15px;
+      font-weight: 800;
+      box-shadow: 0 10px 25px rgba(194, 65, 12, 0.45);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1500;
+      transition: transform 0.2s, background 0.2s;
     }
 
-    .cart-inner {
-      max-width: 900px;
-      margin: 0 auto;
+    .cart-floating-btn:hover {
+      transform: scale(1.05);
+      background: var(--primary-dark);
+    }
+
+    .cart-badge {
+      background: var(--accent);
+      color: var(--dark);
+      font-size: 12px;
+      font-weight: 900;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+
+    /* MODAL DESPLEGABLE DEL CARRITO */
+    .cart-drawer-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      justify-content: flex-end;
+      align-items: stretch;
+    }
+
+    .cart-drawer {
+      background: var(--white);
+      width: 100%;
+      max-width: 460px;
+      height: 100%;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      box-shadow: -10px 0 25px rgba(0,0,0,0.2);
+      animation: slideIn 0.25s ease-out;
     }
 
-    .cart-summary {
+    @keyframes slideIn {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+
+    .cart-drawer-header {
+      padding: 18px 20px;
+      background: var(--dark);
+      color: var(--white);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .cart-total {
-      font-size: 19px;
-      font-weight: 900;
-      color: var(--accent);
+    .cart-drawer-header h3 {
+      font-size: 18px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cart-drawer-body {
+      padding: 20px;
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* LISTA DE ITEMS DENTRO DEL CARRITO */
+    .cart-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .cart-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8fafc;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .cart-item-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .cart-item-sub {
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .cart-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-qty {
+      background: #e2e8f0;
+      border: none;
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-qty:hover {
+      background: #cbd5e1;
+    }
+
+    .cart-item-price {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--primary);
+      min-width: 65px;
+      text-align: right;
+    }
+
+    /* MÉTODOS DE PAGO DENTRO DEL CARRITO */
+    .drawer-section-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: #64748b;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
     }
 
     .grid-payments {
@@ -404,15 +532,16 @@
     }
 
     .btn-pay-option {
-      background: #292524;
-      border: 1px solid #44403c;
-      color: #e7e5e4;
-      padding: 7px 4px;
-      border-radius: 6px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: var(--dark);
+      padding: 8px 4px;
+      border-radius: 8px;
       font-size: 12px;
       font-weight: 700;
       cursor: pointer;
       text-align: center;
+      transition: all 0.2s;
     }
 
     .btn-pay-option.active {
@@ -421,52 +550,89 @@
       color: var(--white);
     }
 
+    /* GEOLOCALIZACIÓN DENTRO DEL CARRITO */
     .geo-box {
       display: flex;
-      align-items: center;
+      flex-direction: column;
       gap: 8px;
-      background: #292524;
-      padding: 8px 12px;
-      border-radius: 6px;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      padding: 12px;
+      border-radius: 10px;
     }
 
     .btn-geo {
       background: #2563eb;
       color: #fff;
       border: none;
-      padding: 6px 12px;
-      border-radius: 4px;
-      font-size: 12px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
       font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .geo-status {
-      font-size: 12px;
-      color: #a8a29e;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .geo-status.ready {
-      color: #4ade80;
-    }
-
-    .btn-order-wsp {
-      background: #25d366;
-      color: var(--white);
-      padding: 11px;
-      border-radius: 8px;
-      font-weight: 800;
-      font-size: 14px;
-      border: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
+    }
+
+    .btn-geo:hover {
+      background: #1d4ed8;
+    }
+
+    .geo-status {
+      font-size: 12px;
+      color: #78716c;
+      text-align: center;
+    }
+
+    .geo-status.ready {
+      color: #15803d;
+      font-weight: bold;
+    }
+
+    /* FOOTER DEL CARRITO */
+    .cart-drawer-footer {
+      padding: 18px 20px;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--dark);
+    }
+
+    .cart-total-amount {
+      color: var(--primary);
+      font-size: 22px;
+    }
+
+    .btn-order-wsp {
+      background: #25d366;
+      color: var(--white);
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 15px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+
+    .btn-order-wsp:hover {
+      background: #1eb857;
     }
 
     /* MODALES & DASHBOARD */
@@ -476,7 +642,7 @@
       top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(4px);
-      z-index: 2000;
+      z-index: 2100;
       justify-content: center;
       align-items: center;
       padding: 14px;
@@ -529,7 +695,6 @@
       color: var(--primary-dark);
     }
 
-    /* CONTROL GPS */
     .gps-toggle-panel {
       background: #f8fafc;
       border: 1px solid #e2e8f0;
@@ -558,7 +723,6 @@
       background: #dc2626;
     }
 
-    /* REPORTE CONTABLE */
     .accounting-filter {
       display: flex;
       gap: 12px;
@@ -636,19 +800,19 @@
     }
 
     .btn-close-modal {
-      position: absolute;
-      top: 14px;
-      right: 16px;
       background: none;
       border: none;
-      font-size: 22px;
+      font-size: 24px;
       cursor: pointer;
+      color: #64748b;
     }
 
-    @media (max-width: 640px) {
-      .hero h2 { font-size: 27px; }
-      .grid-payments { grid-template-columns: repeat(2, 1fr); }
-      .geo-box { flex-direction: column; align-items: stretch; }
+    .btn-close-drawer {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--white);
     }
   </style>
 </head>
@@ -668,7 +832,7 @@
         <button class="btn-admin-login" id="btnAdminTrigger" onclick="abrirModalAdmin()">
           🔒 Admin / Reportes
         </button>
-        <a href="#menu" class="nav-cta">Pedir</a>
+        <a href="#menu" class="nav-cta">Ver Menú</a>
       </div>
     </div>
   </header>
@@ -704,49 +868,81 @@
     <div class="menu-header">
       <div>
         <h3>Nuestras Variedades</h3>
-        <p style="font-size: 13px; color: #78716c;">Elige tus empanadas y recibe tu entrega con confirmación por WhatsApp.</p>
+        <p style="font-size: 13px; color: #78716c;">Elige tus empanadas y agrégalas al carrito para ordenar.</p>
       </div>
       <button onclick="limpiarCarrito()" style="background:none; border:none; color: var(--primary); font-weight:700; cursor:pointer; font-size:13px;">
-        Restablecer selección
+        Vaciar Carrito
       </button>
     </div>
 
     <div class="grid-empanadas" id="contenedorEmpanadas"></div>
   </section>
 
-  <!-- CHECKOUT FLOTANTE -->
-  <div class="cart-bar" id="cartBar">
-    <div class="cart-inner">
-      <div class="cart-summary">
-        <span id="cartCount" style="font-size:13px; color:#a8a29e;">0 empanadas</span>
-        <span class="cart-total" id="cartTotal">Total: S/ 0.00</span>
+  <!-- BOTÓN FLOTANTE INFERIOR DERECHA -->
+  <button class="cart-floating-btn" id="btnFlotanteCarrito" onclick="abrirDrawerCarrito()">
+    <span>🥟 Mi Pedido</span>
+    <span class="cart-badge" id="badgeTotalItems">0</span>
+  </button>
+
+  <!-- MODAL / DRAWER LATERAL DEL CARRITO -->
+  <div class="cart-drawer-overlay" id="drawerCarritoOverlay">
+    <div class="cart-drawer">
+      
+      <div class="cart-drawer-header">
+        <h3>🥟 Tu Orden de Empanadas</h3>
+        <button class="btn-close-drawer" onclick="cerrarDrawerCarrito()">&times;</button>
       </div>
 
-      <!-- FORMA DE PAGO -->
-      <div class="grid-payments">
-        <button type="button" class="btn-pay-option active" onclick="elegirPago('Efectivo', this)">💵 Efectivo</button>
-        <button type="button" class="btn-pay-option" onclick="elegirPago('Yape', this)">🟣 Yape</button>
-        <button type="button" class="btn-pay-option" onclick="elegirPago('Plin', this)">🔵 Plin</button>
-        <button type="button" class="btn-pay-option" onclick="elegirPago('Transferencia', this)">🏦 Transf.</button>
+      <div class="cart-drawer-body">
+        
+        <!-- LISTADO DE PRODUCTOS -->
+        <div>
+          <div class="drawer-section-title">Detalle del Pedido</div>
+          <div class="cart-items-list" id="listaItemsCarrito">
+            <!-- Filas dinámicas generadas con JS -->
+          </div>
+        </div>
+
+        <!-- SELECCIÓN DE MÉTODO DE PAGO -->
+        <div>
+          <div class="drawer-section-title">Forma de Pago</div>
+          <div class="grid-payments">
+            <button type="button" class="btn-pay-option active" onclick="elegirPago('Efectivo', this)">💵 Efectivo</button>
+            <button type="button" class="btn-pay-option" onclick="elegirPago('Yape', this)">🟣 Yape</button>
+            <button type="button" class="btn-pay-option" onclick="elegirPago('Plin', this)">🔵 Plin</button>
+            <button type="button" class="btn-pay-option" onclick="elegirPago('Transferencia', this)">🏦 Transf.</button>
+          </div>
+        </div>
+
+        <!-- ACTIVAR DIRECCIÓN EXACTA (GPS) -->
+        <div>
+          <div class="drawer-section-title">Dirección de Entrega</div>
+          <div class="geo-box">
+            <button type="button" class="btn-geo" onclick="capturarGPSCliente()">📍 Activar mi ubicación exacta</button>
+            <span class="geo-status" id="geoStatus">Presiona el botón para enviar tu coordenada GPS</span>
+          </div>
+        </div>
+
       </div>
 
-      <!-- GPS CLIENTE -->
-      <div class="geo-box">
-        <button type="button" class="btn-geo" onclick="capturarGPSCliente()">📍 Mi dirección exacta</button>
-        <span class="geo-status" id="geoStatus">Pulsa para enviar tu coordenada GPS</span>
+      <!-- TOTAL Y CONFIRMACIÓN POR WHATSAPP -->
+      <div class="cart-drawer-footer">
+        <div class="cart-total-row">
+          <span>Total a pagar:</span>
+          <span class="cart-total-amount" id="drawerTotalMonto">S/ 0.00</span>
+        </div>
+        <button class="btn-order-wsp" onclick="enviarPedidoWhatsApp()">
+          <span>Confirmar y Enviar a WhatsApp</span> 💬
+        </button>
       </div>
 
-      <!-- BOTÓN WHATSAPP -->
-      <button class="btn-order-wsp" onclick="enviarPedidoWhatsApp()">
-        <span>Confirmar Pedido al +51 969 773 064</span> 💬
-      </button>
     </div>
   </div>
 
   <!-- MODAL LOGIN ADMIN -->
   <div class="modal-overlay" id="modalLogin">
     <div class="modal-box">
-      <button class="btn-close-modal" onclick="cerrarModales()">&times;</button>
+      <button class="btn-close-modal" onclick="cerrarModales()" style="position:absolute; top:12px; right:14px;">&times;</button>
       <h3>Acceso de Administrador</h3>
       <p style="font-size: 13px; color: #64748b; margin-bottom: 14px;">Inicia sesión para gestionar catálogo, GPS y reportes contables.</p>
       
@@ -772,7 +968,7 @@
   <!-- MODAL DASHBOARD -->
   <div class="modal-overlay" id="modalDashboard">
     <div class="modal-box wide">
-      <button class="btn-close-modal" onclick="cerrarModales()">&times;</button>
+      <button class="btn-close-modal" onclick="cerrarModales()" style="position:absolute; top:12px; right:14px;">&times;</button>
       <h3>Panel de Control - Empanadas Regocijo</h3>
       
       <!-- TABS -->
@@ -832,7 +1028,7 @@
                 <th>Tipo de Empanada</th>
                 <th>Unidades Vendidas</th>
                 <th>Ingreso Generado (S/)</th>
-                <th>% Participación en Ventas</th>
+                <th>% Participación</th>
               </tr>
             </thead>
             <tbody id="tablaPorTipoBody"></tbody>
@@ -875,476 +1071,4 @@
   </div>
 
   <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-  <script>
-    const WHATSAPP_NUMERO = "51969773064";
-
-    const menuInicial = [
-      {
-        id: "emp-1",
-        nombre: "Carne Clásica Cortada",
-        tag: "Favorita de la casa",
-        descripcion: "Lomo fino trozado a cuchillo, cebolla caramelizada, huevo duro, aceituna y toque andino.",
-        precio: 6.50,
-        imagen: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=600&q=80"
-      },
-      {
-        id: "emp-2",
-        nombre: "Ají de Gallina",
-        tag: "Súper Jugosa",
-        descripcion: "Cremoso guiso tradicional con pechuga deshilachada, ají amarillo y queso paria.",
-        precio: 6.50,
-        imagen: "https://images.unsplash.com/photo-1608039829572-78524f79c4c7?auto=format&fit=crop&w=600&q=80"
-      },
-      {
-        id: "emp-3",
-        nombre: "Queso Andino & Mozzarella",
-        tag: "Queso Fundido",
-        descripcion: "Doble queso fundido con toque de orégano aromático del valle sagrado.",
-        precio: 6.00,
-        imagen: "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80"
-      },
-      {
-        id: "emp-4",
-        nombre: "Champiñones al Ajillo",
-        tag: "Especial",
-        descripcion: "Champiñones salteados al vino blanco, cebolla glaseada y queso derretido.",
-        precio: 7.00,
-        imagen: "https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?auto=format&fit=crop&w=600&q=80"
-      }
-    ];
-
-    let catalogo = JSON.parse(localStorage.getItem('regocijo_menu')) || menuInicial;
-    let registroVentas = JSON.parse(localStorage.getItem('regocijo_ventas')) || [];
-
-    const pedido = {};
-    let metodoPago = "Efectivo";
-    let ubicacionClienteCoords = null;
-    let esAdminAutenticado = false;
-
-    let map = null;
-    let marcadorTitular = null;
-    let capaVentas = null;
-    let watchIdGPS = null;
-    let rastreoActivo = false;
-
-    function iniciarMapaCusco() {
-      const cuscoLat = -13.5167;
-      const cuscoLng = -71.9788;
-
-      map = L.map('cuscoMap').setView([cuscoLat, cuscoLng], 14);
-
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contribuyentes'
-      }).addTo(map);
-
-      const iconoTitular = L.divIcon({
-        className: 'custom-div-icon',
-        html: "<div style='background-color:#c2410c; color:white; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; font-size:18px; border:2px solid white; box-shadow:0 2px 6px rgba(0,0,0,0.4);'>🥟</div>",
-        iconSize: [34, 34],
-        iconAnchor: [17, 17]
-      });
-
-      marcadorTitular = L.marker([cuscoLat, cuscoLng], { icon: iconoTitular }).addTo(map)
-        .bindPopup("<b>Empanadas Regocijo</b><br>Titular en Cusco");
-
-      capaVentas = L.layerGroup().addTo(map);
-      dibujarVentasEnMapa();
-    }
-
-    function dibujarVentasEnMapa() {
-      if (!capaVentas) return;
-      capaVentas.clearLayers();
-
-      registroVentas.forEach(v => {
-        if (v.lat && v.lng) {
-          const m = L.circleMarker([v.lat, v.lng], {
-            radius: 7,
-            fillColor: "#f59e0b",
-            color: "#b45309",
-            weight: 2,
-            opacity: 1,
-            fillOpacity: 0.8
-          });
-          m.bindPopup(`<b>Venta: S/ ${v.total.toFixed(2)}</b><br>${v.fecha}<br>${v.pago}`);
-          capaVentas.addLayer(m);
-        }
-      });
-    }
-
-    function alternarRastreoGPSTitular() {
-      const btn = document.getElementById('btnGPSSwitch');
-      const badge = document.getElementById('gpsBadgeHeader');
-      const coordTexto = document.getElementById('gpsCoordenadasTexto');
-
-      if (!rastreoActivo) {
-        if (!navigator.geolocation) {
-          alert("Geolocalización no soportada.");
-          return;
-        }
-
-        watchIdGPS = navigator.geolocation.watchPosition(
-          (pos) => {
-            const lat = pos.coords.latitude;
-            const lng = pos.coords.longitude;
-
-            if (marcadorTitular) {
-              marcadorTitular.setLatLng([lat, lng]);
-              map.panTo([lat, lng]);
-              marcadorTitular.getPopup().setContent(`<b>🥟 Titular en Ruta</b><br>Precisión: ${Math.round(pos.coords.accuracy)}m`).openOn(map);
-            }
-
-            coordTexto.innerText = `Transmitiendo: Lat ${lat.toFixed(5)}, Lng ${lng.toFixed(5)} (${new Date().toLocaleTimeString()})`;
-          },
-          (err) => {
-            coordTexto.innerText = "Error GPS: " + err.message;
-          },
-          { enableHighAccuracy: true, maximumAge: 1000 }
-        );
-
-        rastreoActivo = true;
-        btn.innerText = "Desconectar GPS en Vivo";
-        btn.className = "btn-gps-connect disconnect";
-        badge.innerText = "GPS Titular: Conectado en Vivo 🟢";
-        badge.className = "gps-badge-status active";
-      } else {
-        if (watchIdGPS !== null) {
-          navigator.geolocation.clearWatch(watchIdGPS);
-          watchIdGPS = null;
-        }
-        rastreoActivo = false;
-        btn.innerText = "Conectar GPS en Vivo";
-        btn.className = "btn-gps-connect";
-        badge.innerText = "GPS Titular: Desconectado";
-        badge.className = "gps-badge-status";
-        coordTexto.innerText = "Estado: Desconectado.";
-      }
-    }
-
-    function renderizarMenu() {
-      const contenedor = document.getElementById('contenedorEmpanadas');
-      contenedor.innerHTML = '';
-
-      catalogo.forEach(item => {
-        const card = document.createElement('article');
-        card.className = 'card';
-        card.innerHTML = `
-          <div class="card-img-wrapper">
-            <span class="card-tag">${item.tag || 'Artesanal'}</span>
-            <img src="${item.imagen}" alt="${item.nombre}">
-          </div>
-          <div class="card-body">
-            <h4 class="card-title">${item.nombre}</h4>
-            <p class="card-desc">${item.descripcion}</p>
-            <div class="card-footer">
-              <span class="price">S/ ${parseFloat(item.precio).toFixed(2)}</span>
-              <button class="btn-add" onclick="agregarAlPedido('${item.id}')">+ Agregar</button>
-            </div>
-          </div>
-        `;
-        contenedor.appendChild(card);
-      });
-    }
-
-    function agregarAlPedido(id) {
-      const prod = catalogo.find(p => p.id === id);
-      if (!prod) return;
-
-      if (!pedido[id]) {
-        pedido[id] = { id: prod.id, nombre: prod.nombre, precio: prod.precio, cantidad: 0 };
-      }
-      pedido[id].cantidad += 1;
-      pedido[id].precio = prod.precio;
-      pedido[id].nombre = prod.nombre;
-      actualizarBarraPedido();
-    }
-
-    function limpiarCarrito() {
-      for (const k in pedido) delete pedido[k];
-      actualizarBarraPedido();
-    }
-
-    function actualizarBarraPedido() {
-      let unidades = 0;
-      let total = 0;
-
-      for (const k in pedido) {
-        unidades += pedido[k].cantidad;
-        total += pedido[k].cantidad * pedido[k].precio;
-      }
-
-      const cartBar = document.getElementById('cartBar');
-      if (unidades > 0) {
-        cartBar.style.display = 'block';
-        document.getElementById('cartCount').innerText = `${unidades} empanada${unidades === 1 ? '' : 's'}`;
-        document.getElementById('cartTotal').innerText = `Total: S/ ${total.toFixed(2)}`;
-      } else {
-        cartBar.style.display = 'none';
-      }
-    }
-
-    function elegirPago(metodo, boton) {
-      metodoPago = metodo;
-      document.querySelectorAll('.btn-pay-option').forEach(btn => btn.classList.remove('active'));
-      boton.classList.add('active');
-    }
-
-    function capturarGPSCliente() {
-      const status = document.getElementById('geoStatus');
-      if (!navigator.geolocation) {
-        status.innerText = "GPS no disponible.";
-        return;
-      }
-      status.innerText = "Obteniendo GPS...";
-
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          ubicacionClienteCoords = {
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude
-          };
-          status.innerText = "✔ Ubicación registrada para entrega";
-          status.classList.add('ready');
-        },
-        () => {
-          status.innerText = "No se pudo obtener GPS (indica dirección en chat).";
-        },
-        { enableHighAccuracy: true }
-      );
-    }
-
-    function enviarPedidoWhatsApp() {
-      let total = 0;
-      let detalleTexto = "";
-      let detalleProductos = [];
-      let itemsParaContabilidad = [];
-      let totalEmpanadas = 0;
-
-      for (const k in pedido) {
-        const item = pedido[k];
-        const sub = item.cantidad * item.precio;
-        detalleTexto += `• ${item.cantidad}x ${item.nombre} (S/ ${sub.toFixed(2)})%0A`;
-        detalleProductos.push(`${item.cantidad}x ${item.nombre}`);
-        
-        // Guardar estructura desglosada por tipo
-        itemsParaContabilidad.push({
-          id: item.id,
-          nombre: item.nombre,
-          precio: item.precio,
-          cantidad: item.cantidad,
-          subtotal: sub
-        });
-
-        totalEmpanadas += item.cantidad;
-        total += sub;
-      }
-
-      const fechaActual = new Date();
-      const fechaISO = fechaActual.toISOString().split('T')[0];
-      const fechaFormato = fechaActual.toLocaleString();
-
-      const nuevaVenta = {
-        id: Date.now(),
-        fecha: fechaFormato,
-        fechaFiltro: fechaISO,
-        productos: detalleProductos.join(', '),
-        items: itemsParaContabilidad,
-        unidades: totalEmpanadas,
-        total: total,
-        pago: metodoPago,
-        lat: ubicacionClienteCoords ? ubicacionClienteCoords.lat : null,
-        lng: ubicacionClienteCoords ? ubicacionClienteCoords.lng : null
-      };
-
-      registroVentas.push(nuevaVenta);
-      localStorage.setItem('regocijo_ventas', JSON.stringify(registroVentas));
-      dibujarVentasEnMapa();
-
-      let mensaje = `*¡Hola Empanadas Regocijo! Deseo hacer un pedido:*%0A%0A`;
-      mensaje += `*Detalle:*%0A${detalleTexto}%0A`;
-      mensaje += `*Total a pagar:* S/ ${total.toFixed(2)}%0A`;
-      mensaje += `*Método de pago:* ${metodoPago}%0A`;
-
-      if (ubicacionClienteCoords) {
-        mensaje += `*Ubicación de entrega:* https://www.google.com/maps?q=${ubicacionClienteCoords.lat},${ubicacionClienteCoords.lng}%0A`;
-      } else {
-        mensaje += `*Dirección:* (Por favor confirmar dirección en Cusco)%0A`;
-      }
-
-      mensaje += `%0A¿Me confirman tiempo estimado de entrega?`;
-
-      window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${mensaje}`, '_blank');
-      limpiarCarrito();
-    }
-
-    function abrirModalAdmin() {
-      if (esAdminAutenticado) {
-        mostrarDashboard();
-      } else {
-        document.getElementById('modalLogin').style.display = 'flex';
-      }
-    }
-
-    function cerrarModales() {
-      document.getElementById('modalLogin').style.display = 'none';
-      document.getElementById('modalDashboard').style.display = 'none';
-    }
-
-    function autenticarAdmin(e) {
-      e.preventDefault();
-      const u = document.getElementById('adminUser').value.trim();
-      const p = document.getElementById('adminPass').value.trim();
-
-      if (u === 'admin' && p === 'regocijo123') {
-        esAdminAutenticado = true;
-        document.getElementById('modalLogin').style.display = 'none';
-        document.getElementById('btnAdminTrigger').innerText = "⚙️ Panel Activo";
-        mostrarDashboard();
-      } else {
-        alert("Credenciales incorrectas.");
-      }
-    }
-
-    function cambiarTab(tab) {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('tabCatalogoContenido').style.display = 'none';
-      document.getElementById('tabContabilidadContenido').style.display = 'none';
-      document.getElementById('tabGPSContenido').style.display = 'none';
-
-      if (tab === 'catalogo') {
-        document.getElementById('tabBtnCatalogo').classList.add('active');
-        document.getElementById('tabCatalogoContenido').style.display = 'block';
-      } else if (tab === 'contabilidad') {
-        document.getElementById('tabBtnContabilidad').classList.add('active');
-        document.getElementById('tabContabilidadContenido').style.display = 'block';
-        actualizarReporteContable();
-      } else if (tab === 'gps') {
-        document.getElementById('tabBtnGPS').classList.add('active');
-        document.getElementById('tabGPSContenido').style.display = 'block';
-      }
-    }
-
-    function mostrarDashboard() {
-      const tbody = document.getElementById('tablaDashboardBody');
-      tbody.innerHTML = '';
-
-      catalogo.forEach((item, index) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><input type="text" id="edit-nom-${index}" value="${item.nombre}" style="width:100%; padding:4px;"></td>
-          <td><input type="number" step="0.5" id="edit-pre-${index}" value="${item.precio}" style="width:70px; padding:4px;"></td>
-          <td><input type="text" id="edit-desc-${index}" value="${item.descripcion}" style="width:100%; padding:4px;"></td>
-          <td><input type="text" id="edit-img-${index}" value="${item.imagen}" style="width:100%; padding:4px;"></td>
-          <td>
-            <button style="background:var(--primary); color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer;" onclick="guardarFila(${index})">Guardar</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      document.getElementById('modalDashboard').style.display = 'flex';
-      cambiarTab('catalogo');
-    }
-
-    function guardarFila(index) {
-      catalogo[index].nombre = document.getElementById(`edit-nom-${index}`).value;
-      catalogo[index].precio = parseFloat(document.getElementById(`edit-pre-${index}`).value) || 0;
-      catalogo[index].descripcion = document.getElementById(`edit-desc-${index}`).value;
-      catalogo[index].imagen = document.getElementById(`edit-img-${index}`).value;
-
-      localStorage.setItem('regocijo_menu', JSON.stringify(catalogo));
-      renderizarMenu();
-      alert("Empanada actualizada.");
-    }
-
-    // REPORTES CONTABLES: GENERAL Y POR TIPO DE EMPANADA
-    function actualizarReporteContable() {
-      const filtro = document.getElementById('filtroFechaContable').value;
-      const tbodyDetalle = document.getElementById('tablaContableBody');
-      const tbodyTipo = document.getElementById('tablaPorTipoBody');
-      tbodyDetalle.innerHTML = '';
-      tbodyTipo.innerHTML = '';
-
-      let ventasFiltradas = registroVentas;
-      if (filtro) {
-        ventasFiltradas = registroVentas.filter(v => v.fechaFiltro === filtro);
-      }
-
-      let sumaTotal = 0;
-      let totalEmpanadas = 0;
-
-      // Diccionario acumulador por tipo de empanada
-      const desglosePorTipo = {};
-
-      ventasFiltradas.forEach(v => {
-        sumaTotal += v.total;
-        totalEmpanadas += v.unidades;
-
-        // Sumar cantidades y montos por cada tipo
-        if (v.items && Array.isArray(v.items)) {
-          v.items.forEach(it => {
-            if (!desglosePorTipo[it.nombre]) {
-              desglosePorTipo[it.nombre] = { cantidad: 0, ingresos: 0 };
-            }
-            desglosePorTipo[it.nombre].cantidad += it.cantidad;
-            desglosePorTipo[it.nombre].ingresos += it.subtotal;
-          });
-        }
-
-        const ubiTexto = (v.lat && v.lng) 
-          ? `<a href="https://www.google.com/maps?q=${v.lat},${v.lng}" target="_blank" style="color:#0066cc;">Ver Mapa</a>` 
-          : 'No enviada';
-
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${v.fecha}</td>
-          <td>${v.productos}</td>
-          <td><strong>S/ ${v.total.toFixed(2)}</strong></td>
-          <td>${v.pago}</td>
-          <td>${ubiTexto}</td>
-        `;
-        tbodyDetalle.appendChild(tr);
-      });
-
-      // Renderizar tabla por tipo de empanada
-      const tiposArray = Object.keys(desglosePorTipo);
-      if (tiposArray.length === 0) {
-        tbodyTipo.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8; padding:12px;">No hay ventas registradas para este periodo.</td></tr>`;
-      } else {
-        tiposArray.forEach(nombreTipo => {
-          const datos = desglosePorTipo[nombreTipo];
-          const porcentaje = sumaTotal > 0 ? ((datos.ingresos / sumaTotal) * 100).toFixed(1) : 0;
-
-          const trTipo = document.createElement('tr');
-          trTipo.innerHTML = `
-            <td><strong>${nombreTipo}</strong></td>
-            <td>${datos.cantidad} unid.</td>
-            <td><strong>S/ ${datos.ingresos.toFixed(2)}</strong></td>
-            <td>
-              <span style="background:#ffedd5; color:var(--primary-dark); padding:2px 8px; border-radius:10px; font-weight:bold;">
-                ${porcentaje}%
-              </span>
-            </td>
-          `;
-          tbodyTipo.appendChild(trTipo);
-        });
-      }
-
-      document.getElementById('resumenMontoTotal').innerText = `S/ ${sumaTotal.toFixed(2)}`;
-      document.getElementById('resumenCantPedidos').innerText = ventasFiltradas.length;
-      document.getElementById('resumenEmpanadasVendidas').innerText = totalEmpanadas;
-    }
-
-    function limpiarFiltroFecha() {
-      document.getElementById('filtroFechaContable').value = '';
-      actualizarReporteContable();
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      renderizarMenu();
-      iniciarMapaCusco();
-    });
-  </script>
-</body>
-</html>
+  <script src="
