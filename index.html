@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Empanadas Regocijo | Tradición Artesanal y Sabor Único</title>
+  <title>Empanadas Regocijo | Sabor Artesanal & Delivery Cusco</title>
+  
+  <!-- Leaflet CSS para Mapas -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  
   <style>
     :root {
       --primary: #c2410c;
@@ -29,7 +33,7 @@
       background-color: var(--gray-light);
       color: var(--text);
       line-height: 1.6;
-      padding-bottom: 240px;
+      padding-bottom: 260px;
     }
 
     /* HEADER & NAVEGACIÓN */
@@ -37,14 +41,14 @@
       background: var(--white);
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 1000;
       box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     }
 
     .nav-container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 14px 20px;
+      padding: 12px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -72,9 +76,8 @@
     }
 
     .brand-text h1 {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 800;
-      letter-spacing: -0.5px;
       line-height: 1.1;
       color: var(--dark);
     }
@@ -97,7 +100,7 @@
       background: #f1f5f9;
       color: var(--dark);
       border: 1px solid #cbd5e1;
-      padding: 8px 14px;
+      padding: 7px 14px;
       border-radius: 20px;
       font-size: 13px;
       font-weight: 700;
@@ -115,22 +118,17 @@
     .nav-cta {
       background: var(--primary);
       color: var(--white);
-      padding: 9px 18px;
+      padding: 8px 16px;
       border-radius: 30px;
       text-decoration: none;
       font-weight: 600;
-      font-size: 14px;
-      transition: all 0.2s;
-    }
-
-    .nav-cta:hover {
-      background: var(--primary-dark);
+      font-size: 13px;
     }
 
     /* HERO */
     .hero {
       background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
-      padding: 50px 20px 70px;
+      padding: 44px 20px 60px;
       text-align: center;
       border-bottom: 1px solid #fed7aa;
     }
@@ -146,32 +144,31 @@
       color: var(--primary-dark);
       font-weight: 700;
       font-size: 12px;
-      padding: 6px 14px;
+      padding: 5px 12px;
       border-radius: 20px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       border: 1px solid #fdba74;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     .hero h2 {
-      font-size: 38px;
+      font-size: 34px;
       font-weight: 900;
       color: var(--dark);
       line-height: 1.2;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .hero p {
       font-size: 16px;
       color: #78716c;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .hero-features {
       display: flex;
       justify-content: center;
-      gap: 16px;
+      gap: 14px;
       flex-wrap: wrap;
     }
 
@@ -187,36 +184,90 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.04);
     }
 
-    /* SECCIÓN DE PRODUCTOS */
+    /* MAPA EN VIVO */
+    .map-section {
+      max-width: 1200px;
+      margin: 20px auto 40px;
+      padding: 0 20px;
+    }
+
+    .map-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid #fed7aa;
+    }
+
+    .map-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .map-header h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .gps-badge-status {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 12px;
+      background: #e2e8f0;
+      color: #64748b;
+    }
+
+    .gps-badge-status.active {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    #cuscoMap {
+      width: 100%;
+      height: 340px;
+      border-radius: 10px;
+      z-index: 10;
+    }
+
+    /* MENÚ */
     .section-menu {
       max-width: 1200px;
-      margin: -30px auto 40px;
+      margin: 20px auto 40px;
       padding: 0 20px;
     }
 
     .menu-header {
       background: var(--white);
-      padding: 18px 24px;
+      padding: 16px 20px;
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      margin-bottom: 26px;
+      margin-bottom: 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 14px;
+      gap: 12px;
     }
 
     .menu-header h3 {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 800;
       color: var(--dark);
     }
 
     .grid-empanadas {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 22px;
     }
 
     .card {
@@ -226,18 +277,17 @@
       box-shadow: var(--shadow);
       display: flex;
       flex-direction: column;
-      transition: transform 0.2s, box-shadow 0.2s;
       border: 1px solid #f1f5f9;
+      transition: transform 0.2s;
     }
 
     .card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
     }
 
     .card-img-wrapper {
       position: relative;
-      height: 180px;
+      height: 175px;
       background: #fed7aa;
       overflow: hidden;
     }
@@ -250,26 +300,26 @@
 
     .card-tag {
       position: absolute;
-      top: 12px;
-      left: 12px;
+      top: 10px;
+      left: 10px;
       background: rgba(28, 25, 23, 0.85);
       backdrop-filter: blur(4px);
       color: var(--white);
       font-size: 11px;
       font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 20px;
+      padding: 3px 8px;
+      border-radius: 16px;
     }
 
     .card-body {
-      padding: 20px;
+      padding: 18px;
       flex: 1;
       display: flex;
       flex-direction: column;
     }
 
     .card-title {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 800;
       color: var(--dark);
       margin-bottom: 6px;
@@ -278,7 +328,7 @@
     .card-desc {
       font-size: 13px;
       color: #78716c;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       flex: 1;
     }
 
@@ -287,12 +337,12 @@
       justify-content: space-between;
       align-items: center;
       margin-top: auto;
-      padding-top: 14px;
+      padding-top: 12px;
       border-top: 1px solid #f3f4f6;
     }
 
     .price {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 900;
       color: var(--primary);
     }
@@ -301,14 +351,11 @@
       background: var(--dark);
       color: var(--white);
       border: none;
-      padding: 9px 16px;
+      padding: 8px 14px;
       border-radius: 8px;
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
       transition: background 0.2s;
     }
 
@@ -316,7 +363,7 @@
       background: var(--primary);
     }
 
-    /* BARRA FLOTANTE DE CHECKOUT */
+    /* BARRA INFERIOR DE CHECKOUT */
     .cart-bar {
       position: fixed;
       bottom: 0;
@@ -324,9 +371,9 @@
       width: 100%;
       background: #1c1917;
       color: var(--white);
-      padding: 16px 20px;
+      padding: 14px 18px;
       box-shadow: 0 -8px 25px rgba(0,0,0,0.3);
-      z-index: 99;
+      z-index: 1000;
       display: none;
     }
 
@@ -335,7 +382,7 @@
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .cart-summary {
@@ -344,43 +391,28 @@
       align-items: center;
     }
 
-    .cart-count {
-      font-size: 14px;
-      color: #a8a29e;
-      font-weight: 600;
-    }
-
     .cart-total {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 900;
       color: var(--accent);
-    }
-
-    .payment-title {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #d6d3d1;
-      font-weight: bold;
     }
 
     .grid-payments {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
+      gap: 6px;
     }
 
     .btn-pay-option {
       background: #292524;
       border: 1px solid #44403c;
       color: #e7e5e4;
-      padding: 8px 4px;
-      border-radius: 8px;
-      font-size: 13px;
+      padding: 7px 4px;
+      border-radius: 6px;
+      font-size: 12px;
       font-weight: 700;
       cursor: pointer;
       text-align: center;
-      transition: all 0.2s;
     }
 
     .btn-pay-option.active {
@@ -392,34 +424,30 @@
     .geo-box {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       background: #292524;
       padding: 8px 12px;
-      border-radius: 8px;
+      border-radius: 6px;
     }
 
     .btn-geo {
       background: #2563eb;
       color: #fff;
       border: none;
-      padding: 6px 14px;
-      border-radius: 6px;
+      padding: 6px 12px;
+      border-radius: 4px;
       font-size: 12px;
       font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
     }
 
-    .btn-geo:hover {
-      background: #1d4ed8;
-    }
-
     .geo-status {
       font-size: 12px;
       color: #a8a29e;
+      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
     }
 
     .geo-status.ready {
@@ -429,49 +457,43 @@
     .btn-order-wsp {
       background: #25d366;
       color: var(--white);
-      padding: 12px;
-      border-radius: 10px;
+      padding: 11px;
+      border-radius: 8px;
       font-weight: 800;
-      font-size: 15px;
+      font-size: 14px;
       border: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      transition: background 0.2s;
+      gap: 6px;
     }
 
-    .btn-order-wsp:hover {
-      background: #1eb857;
-    }
-
-    /* MODALES: LOGIN & DASHBOARD */
+    /* MODALES & DASHBOARD */
     .modal-overlay {
       display: none;
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.65);
+      background: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(4px);
-      z-index: 200;
+      z-index: 2000;
       justify-content: center;
       align-items: center;
-      padding: 16px;
+      padding: 14px;
     }
 
     .modal-box {
       background: var(--white);
       border-radius: var(--radius);
-      padding: 24px;
+      padding: 22px;
       width: 100%;
       max-width: 440px;
       position: relative;
-      box-shadow: var(--shadow);
     }
 
     .modal-box.wide {
-      max-width: 820px;
-      max-height: 85vh;
+      max-width: 950px;
+      max-height: 88vh;
       overflow-y: auto;
     }
 
@@ -482,53 +504,135 @@
       margin-bottom: 6px;
     }
 
-    .modal-sub {
-      font-size: 13px;
-      color: #78716c;
+    .dashboard-tabs {
+      display: flex;
+      gap: 8px;
       margin-bottom: 16px;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 8px;
+      flex-wrap: wrap;
     }
 
-    .form-group {
-      margin-bottom: 14px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--dark);
-      margin-bottom: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .form-group input, .form-group textarea {
-      width: 100%;
-      padding: 9px 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      font-size: 14px;
-      outline: none;
-    }
-
-    .form-group input:focus, .form-group textarea:focus {
-      border-color: var(--primary);
-    }
-
-    .btn-modal-action {
-      width: 100%;
-      background: var(--primary);
-      color: var(--white);
+    .tab-btn {
+      background: none;
       border: none;
-      padding: 11px;
-      border-radius: 8px;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13px;
+      padding: 6px 12px;
+      color: #64748b;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+
+    .tab-btn.active {
+      background: #ffedd5;
+      color: var(--primary-dark);
+    }
+
+    /* CONTROL GPS */
+    .gps-toggle-panel {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 14px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn-gps-connect {
+      background: #16a34a;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 13px;
       cursor: pointer;
     }
 
-    .btn-modal-action:hover {
-      background: var(--primary-dark);
+    .btn-gps-connect.disconnect {
+      background: #dc2626;
+    }
+
+    /* REPORTE CONTABLE */
+    .accounting-filter {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 14px;
+      background: #f8fafc;
+      padding: 10px 14px;
+      border-radius: 8px;
+      flex-wrap: wrap;
+    }
+
+    .accounting-filter input {
+      padding: 6px 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    .accounting-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .summary-card {
+      background: #fff7ed;
+      border: 1px solid #ffedd5;
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    .summary-card span {
+      font-size: 11px;
+      color: #78716c;
+      font-weight: bold;
+    }
+
+    .summary-card h4 {
+      font-size: 20px;
+      color: var(--primary-dark);
+      font-weight: 900;
+    }
+
+    .section-subtitle {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--dark);
+      margin: 18px 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      margin-bottom: 16px;
+    }
+
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      text-align: left;
+    }
+
+    .custom-table th, .custom-table td {
+      border: 1px solid #e2e8f0;
+      padding: 8px 10px;
+    }
+
+    .custom-table th {
+      background: #f1f5f9;
+      color: #334155;
     }
 
     .btn-close-modal {
@@ -539,50 +643,10 @@
       border: none;
       font-size: 22px;
       cursor: pointer;
-      color: #64748b;
-    }
-
-    /* TABLA DASHBOARD */
-    .dashboard-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 12px;
-      font-size: 13px;
-    }
-
-    .dashboard-table th, .dashboard-table td {
-      border: 1px solid #e2e8f0;
-      padding: 10px;
-      text-align: left;
-    }
-
-    .dashboard-table th {
-      background: #f8fafc;
-      font-weight: 700;
-      color: var(--dark);
-    }
-
-    .dashboard-table input {
-      width: 100%;
-      padding: 6px 8px;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      font-size: 13px;
-    }
-
-    .btn-table-action {
-      background: var(--primary);
-      color: var(--white);
-      border: none;
-      padding: 6px 10px;
-      border-radius: 6px;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 12px;
     }
 
     @media (max-width: 640px) {
-      .hero h2 { font-size: 28px; }
+      .hero h2 { font-size: 27px; }
       .grid-payments { grid-template-columns: repeat(2, 1fr); }
       .geo-box { flex-direction: column; align-items: stretch; }
     }
@@ -590,19 +654,19 @@
 </head>
 <body>
 
-  <!-- NAVEGACIÓN -->
+  <!-- HEADER -->
   <header>
     <div class="nav-container">
       <a href="#" class="brand">
         <div class="brand-icon">🥟</div>
         <div class="brand-text">
           <h1>Empanadas Regocijo</h1>
-          <span>Horneadas al Momento</span>
+          <span>Cusco · Sabor en Ruta</span>
         </div>
       </a>
       <div class="nav-actions">
         <button class="btn-admin-login" id="btnAdminTrigger" onclick="abrirModalAdmin()">
-          🔒 Admin
+          🔒 Admin / Reportes
         </button>
         <a href="#menu" class="nav-cta">Pedir</a>
       </div>
@@ -612,131 +676,216 @@
   <!-- HERO -->
   <section class="hero">
     <div class="hero-container">
-      <span class="badge-hero">Masa artesanal extra crocante & relleno jugoso</span>
-      <h2>Sabor que alegra el día en cada bocado</h2>
-      <p>Elaboradas con recetas tradicionales, cortes selectos y horneadas al momento para que te lleguen calientitas a la puerta.</p>
+      <span class="badge-hero">Masa artesanal crocante & entrega en vivo</span>
+      <h2>Sabor que te alegra el día en cada bocado</h2>
+      <p>Horneadas al momento en Cusco. Sigue nuestra ubicación en el mapa mientras llevamos tu orden calientita.</p>
       
       <div class="hero-features">
-        <div class="feature-pill">🔥 100% Horneadas</div>
-        <div class="feature-pill">🥩 Cortes Premium</div>
-        <div class="feature-pill">⚡ Delivery Inmediato</div>
+        <div class="feature-pill">📍 Rastreo en Cusco</div>
+        <div class="feature-pill">🥟 Masa de Tradición</div>
+        <div class="feature-pill">⚡ Directo a tu Puerta</div>
       </div>
     </div>
   </section>
 
-  <!-- LISTADO DINÁMICO DE EMPANADAS -->
+  <!-- MAPA CUSCO -->
+  <section class="map-section">
+    <div class="map-card">
+      <div class="map-header">
+        <h3>📍 Mapa en Vivo - Entregas Cusco</h3>
+        <span class="gps-badge-status" id="gpsBadgeHeader">GPS Titular: En espera</span>
+      </div>
+      <div id="cuscoMap"></div>
+    </div>
+  </section>
+
+  <!-- MENÚ -->
   <section class="section-menu" id="menu">
     <div class="menu-header">
       <div>
         <h3>Nuestras Variedades</h3>
-        <p style="font-size: 13px; color: #78716c;">Elige tus favoritas y envíanos tu orden con geolocalización directa.</p>
+        <p style="font-size: 13px; color: #78716c;">Elige tus empanadas y recibe tu entrega con confirmación por WhatsApp.</p>
       </div>
       <button onclick="limpiarCarrito()" style="background:none; border:none; color: var(--primary); font-weight:700; cursor:pointer; font-size:13px;">
         Restablecer selección
       </button>
     </div>
 
-    <div class="grid-empanadas" id="contenedorEmpanadas">
-      <!-- Se genera dinámicamente desde JavaScript -->
-    </div>
+    <div class="grid-empanadas" id="contenedorEmpanadas"></div>
   </section>
 
-  <!-- BARRA DE CHECKOUT FLOTANTE -->
+  <!-- CHECKOUT FLOTANTE -->
   <div class="cart-bar" id="cartBar">
     <div class="cart-inner">
       <div class="cart-summary">
-        <span class="cart-count" id="cartCount">0 empanadas seleccionadas</span>
+        <span id="cartCount" style="font-size:13px; color:#a8a29e;">0 empanadas</span>
         <span class="cart-total" id="cartTotal">Total: S/ 0.00</span>
       </div>
 
       <!-- FORMA DE PAGO -->
-      <div>
-        <div class="payment-title">Método de pago:</div>
-        <div class="grid-payments">
-          <button type="button" class="btn-pay-option active" onclick="elegirPago('Efectivo', this)">💵 Efectivo</button>
-          <button type="button" class="btn-pay-option" onclick="elegirPago('Yape', this)">🟣 Yape</button>
-          <button type="button" class="btn-pay-option" onclick="elegirPago('Plin', this)">🔵 Plin</button>
-          <button type="button" class="btn-pay-option" onclick="elegirPago('Transferencia', this)">🏦 Transf.</button>
-        </div>
+      <div class="grid-payments">
+        <button type="button" class="btn-pay-option active" onclick="elegirPago('Efectivo', this)">💵 Efectivo</button>
+        <button type="button" class="btn-pay-option" onclick="elegirPago('Yape', this)">🟣 Yape</button>
+        <button type="button" class="btn-pay-option" onclick="elegirPago('Plin', this)">🔵 Plin</button>
+        <button type="button" class="btn-pay-option" onclick="elegirPago('Transferencia', this)">🏦 Transf.</button>
       </div>
 
-      <!-- GEOLOCALIZACIÓN -->
+      <!-- GPS CLIENTE -->
       <div class="geo-box">
-        <button type="button" class="btn-geo" onclick="capturarGPS()">📍 Activar mi ubicación</button>
-        <span class="geo-status" id="geoStatus">Envía tus coordenadas para la entrega exacta a domicilio</span>
+        <button type="button" class="btn-geo" onclick="capturarGPSCliente()">📍 Mi dirección exacta</button>
+        <span class="geo-status" id="geoStatus">Pulsa para enviar tu coordenada GPS</span>
       </div>
 
-      <!-- CONFIRMAR POR WHATSAPP -->
+      <!-- BOTÓN WHATSAPP -->
       <button class="btn-order-wsp" onclick="enviarPedidoWhatsApp()">
-        <span>Confirmar Pedido por WhatsApp</span> 💬
+        <span>Confirmar Pedido al +51 969 773 064</span> 💬
       </button>
     </div>
   </div>
 
-  <!-- MODAL DE INICIO DE SESIÓN ADMIN -->
+  <!-- MODAL LOGIN ADMIN -->
   <div class="modal-overlay" id="modalLogin">
     <div class="modal-box">
       <button class="btn-close-modal" onclick="cerrarModales()">&times;</button>
       <h3>Acceso de Administrador</h3>
-      <p class="modal-sub">Ingresa para editar empanadas, precios e imágenes.</p>
+      <p style="font-size: 13px; color: #64748b; margin-bottom: 14px;">Inicia sesión para gestionar catálogo, GPS y reportes contables.</p>
       
       <form onsubmit="autenticarAdmin(event)">
-        <div class="form-group">
-          <label>Usuario</label>
-          <input type="text" id="adminUser" required placeholder="admin">
+        <div style="margin-bottom: 12px;">
+          <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:4px;">Usuario</label>
+          <input type="text" id="adminUser" required placeholder="admin" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:6px;">
         </div>
-        <div class="form-group">
-          <label>Contraseña</label>
-          <input type="password" id="adminPass" required placeholder="••••••••">
+        <div style="margin-bottom: 14px;">
+          <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:4px;">Contraseña</label>
+          <input type="password" id="adminPass" required placeholder="••••••••" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:6px;">
         </div>
         <div style="font-size: 11px; color: #94a3b8; margin-bottom: 12px;">
-          Credenciales por defecto: <strong>admin</strong> / <strong>regocijo123</strong>
+          Credenciales: <strong>admin</strong> / <strong>regocijo123</strong>
         </div>
-        <button type="submit" class="btn-modal-action">Ingresar al Dashboard</button>
+        <button type="submit" style="width:100%; background:var(--primary); color:#fff; border:none; padding:10px; border-radius:6px; font-weight:bold; cursor:pointer;">
+          Ingresar al Panel
+        </button>
       </form>
     </div>
   </div>
 
-  <!-- MODAL DASHBOARD ADMIN -->
+  <!-- MODAL DASHBOARD -->
   <div class="modal-overlay" id="modalDashboard">
     <div class="modal-box wide">
       <button class="btn-close-modal" onclick="cerrarModales()">&times;</button>
       <h3>Panel de Control - Empanadas Regocijo</h3>
-      <p class="modal-sub">Modifica nombres, precios, fotos y descripciones. Los cambios se reflejarán de inmediato.</p>
-
-      <table class="dashboard-table">
-        <thead>
-          <tr>
-            <th style="width: 16%;">Nombre</th>
-            <th style="width: 12%;">Precio (S/)</th>
-            <th style="width: 32%;">Descripción</th>
-            <th style="width: 25%;">URL Imagen</th>
-            <th style="width: 15%;">Acción</th>
-          </tr>
-        </thead>
-        <tbody id="tablaDashboardBody">
-          <!-- Filas de edición generadas por JS -->
-        </tbody>
-      </table>
-
-      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px;">
-        <button class="btn-table-action" style="background:#64748b;" onclick="restablecerMenuOriginal()">Restablecer Todo</button>
-        <button class="btn-table-action" style="background:#0f172a;" onclick="cerrarModales()">Cerrar Panel</button>
+      
+      <!-- TABS -->
+      <div class="dashboard-tabs">
+        <button class="tab-btn active" id="tabBtnCatalogo" onclick="cambiarTab('catalogo')">📝 Catálogo y Precios</button>
+        <button class="tab-btn" id="tabBtnContabilidad" onclick="cambiarTab('contabilidad')">📊 Reporte Contable & Ventas</button>
+        <button class="tab-btn" id="tabBtnGPS" onclick="cambiarTab('gps')">📡 GPS en Vivo Titular</button>
       </div>
+
+      <!-- SECCIÓN 1: CATÁLOGO -->
+      <div id="tabCatalogoContenido">
+        <div class="table-container">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Precio (S/)</th>
+                <th>Descripción</th>
+                <th>Imagen (URL)</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="tablaDashboardBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SECCIÓN 2: REPORTE CONTABLE COMPLETO -->
+      <div id="tabContabilidadContenido" style="display: none;">
+        <div class="accounting-filter">
+          <label style="font-size: 13px; font-weight:bold;">Filtrar por fecha:</label>
+          <input type="date" id="filtroFechaContable" onchange="actualizarReporteContable()">
+          <button style="padding:6px 10px; background:#e2e8f0; border:none; border-radius:6px; font-size:12px; cursor:pointer;" onclick="limpiarFiltroFecha()">Ver todo el historial</button>
+        </div>
+
+        <div class="accounting-summary">
+          <div class="summary-card">
+            <span>TOTAL INGRESOS</span>
+            <h4 id="resumenMontoTotal">S/ 0.00</h4>
+          </div>
+          <div class="summary-card">
+            <span>PEDIDOS REGISTRADOS</span>
+            <h4 id="resumenCantPedidos">0</h4>
+          </div>
+          <div class="summary-card">
+            <span>TOTAL EMPANADAS</span>
+            <h4 id="resumenEmpanadasVendidas">0</h4>
+          </div>
+        </div>
+
+        <!-- SUBREPORTE: POR TIPO DE EMPANADA -->
+        <div class="section-subtitle">🥟 Ventas Desglosadas por Tipo de Empanada</div>
+        <div class="table-container">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Tipo de Empanada</th>
+                <th>Unidades Vendidas</th>
+                <th>Ingreso Generado (S/)</th>
+                <th>% Participación en Ventas</th>
+              </tr>
+            </thead>
+            <tbody id="tablaPorTipoBody"></tbody>
+          </table>
+        </div>
+
+        <!-- SUBREPORTE: DETALLE DE PEDIDOS -->
+        <div class="section-subtitle">📋 Historial Detallado de Órdenes Realizadas</div>
+        <div class="table-container">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Fecha y Hora</th>
+                <th>Detalle Productos</th>
+                <th>Total</th>
+                <th>Pago</th>
+                <th>Ubicación Entrega</th>
+              </tr>
+            </thead>
+            <tbody id="tablaContableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SECCIÓN 3: GPS TITULAR -->
+      <div id="tabGPSContenido" style="display: none;">
+        <div class="gps-toggle-panel">
+          <div>
+            <strong>Transmisión en Vivo de tu Ubicación:</strong>
+            <p style="font-size:13px; color:#64748b;">Al activarlo desde tu teléfono al caminar por Cusco, tu ubicación se mostrará en el mapa principal en tiempo real.</p>
+          </div>
+          <button id="btnGPSSwitch" class="btn-gps-connect" onclick="alternarRastreoGPSTitular()">Conectar GPS en Vivo</button>
+        </div>
+        <div style="font-size: 12px; color: #64748b;" id="gpsCoordenadasTexto">
+          Estado: Desconectado.
+        </div>
+      </div>
+
     </div>
   </div>
 
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <script>
-    // CONFIGURACIÓN OFICIAL DE CONTACTO
     const WHATSAPP_NUMERO = "51969773064";
 
-    // MENÚ POR DEFECTO
     const menuInicial = [
       {
         id: "emp-1",
         nombre: "Carne Clásica Cortada",
         tag: "Favorita de la casa",
-        descripcion: "Lomo fino trozado a cuchillo, cebolla caramelizada, huevo duro, aceituna y toque andino de especias.",
+        descripcion: "Lomo fino trozado a cuchillo, cebolla caramelizada, huevo duro, aceituna y toque andino.",
         precio: 6.50,
         imagen: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=600&q=80"
       },
@@ -744,7 +893,7 @@
         id: "emp-2",
         nombre: "Ají de Gallina",
         tag: "Súper Jugosa",
-        descripcion: "Cremoso guiso tradicional con pechuga deshilachada, ají amarillo aromático, queso paria y finas especias.",
+        descripcion: "Cremoso guiso tradicional con pechuga deshilachada, ají amarillo y queso paria.",
         precio: 6.50,
         imagen: "https://images.unsplash.com/photo-1608039829572-78524f79c4c7?auto=format&fit=crop&w=600&q=80"
       },
@@ -752,7 +901,7 @@
         id: "emp-3",
         nombre: "Queso Andino & Mozzarella",
         tag: "Queso Fundido",
-        descripcion: "Combinación cremosa de queso andino madurado con mozzarella y orégano fresco del valle sagrado.",
+        descripcion: "Doble queso fundido con toque de orégano aromático del valle sagrado.",
         precio: 6.00,
         imagen: "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80"
       },
@@ -760,22 +909,119 @@
         id: "emp-4",
         nombre: "Champiñones al Ajillo",
         tag: "Especial",
-        descripcion: "Salteado de champiñones frescos al vino blanco, cebolla glaseada, ajo suave y queso fundido.",
+        descripcion: "Champiñones salteados al vino blanco, cebolla glaseada y queso derretido.",
         precio: 7.00,
         imagen: "https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?auto=format&fit=crop&w=600&q=80"
       }
     ];
 
-    // CARGAR PRODUCTOS DESDE LOCALSTORAGE O DEFAULT
     let catalogo = JSON.parse(localStorage.getItem('regocijo_menu')) || menuInicial;
+    let registroVentas = JSON.parse(localStorage.getItem('regocijo_ventas')) || [];
 
-    // ESTADO DEL PEDIDO
     const pedido = {};
     let metodoPago = "Efectivo";
-    let ubicacionUrl = "";
+    let ubicacionClienteCoords = null;
     let esAdminAutenticado = false;
 
-    // RENDERIZAR MENÚ AL CLIENTE
+    let map = null;
+    let marcadorTitular = null;
+    let capaVentas = null;
+    let watchIdGPS = null;
+    let rastreoActivo = false;
+
+    function iniciarMapaCusco() {
+      const cuscoLat = -13.5167;
+      const cuscoLng = -71.9788;
+
+      map = L.map('cuscoMap').setView([cuscoLat, cuscoLng], 14);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contribuyentes'
+      }).addTo(map);
+
+      const iconoTitular = L.divIcon({
+        className: 'custom-div-icon',
+        html: "<div style='background-color:#c2410c; color:white; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; font-size:18px; border:2px solid white; box-shadow:0 2px 6px rgba(0,0,0,0.4);'>🥟</div>",
+        iconSize: [34, 34],
+        iconAnchor: [17, 17]
+      });
+
+      marcadorTitular = L.marker([cuscoLat, cuscoLng], { icon: iconoTitular }).addTo(map)
+        .bindPopup("<b>Empanadas Regocijo</b><br>Titular en Cusco");
+
+      capaVentas = L.layerGroup().addTo(map);
+      dibujarVentasEnMapa();
+    }
+
+    function dibujarVentasEnMapa() {
+      if (!capaVentas) return;
+      capaVentas.clearLayers();
+
+      registroVentas.forEach(v => {
+        if (v.lat && v.lng) {
+          const m = L.circleMarker([v.lat, v.lng], {
+            radius: 7,
+            fillColor: "#f59e0b",
+            color: "#b45309",
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+          });
+          m.bindPopup(`<b>Venta: S/ ${v.total.toFixed(2)}</b><br>${v.fecha}<br>${v.pago}`);
+          capaVentas.addLayer(m);
+        }
+      });
+    }
+
+    function alternarRastreoGPSTitular() {
+      const btn = document.getElementById('btnGPSSwitch');
+      const badge = document.getElementById('gpsBadgeHeader');
+      const coordTexto = document.getElementById('gpsCoordenadasTexto');
+
+      if (!rastreoActivo) {
+        if (!navigator.geolocation) {
+          alert("Geolocalización no soportada.");
+          return;
+        }
+
+        watchIdGPS = navigator.geolocation.watchPosition(
+          (pos) => {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+
+            if (marcadorTitular) {
+              marcadorTitular.setLatLng([lat, lng]);
+              map.panTo([lat, lng]);
+              marcadorTitular.getPopup().setContent(`<b>🥟 Titular en Ruta</b><br>Precisión: ${Math.round(pos.coords.accuracy)}m`).openOn(map);
+            }
+
+            coordTexto.innerText = `Transmitiendo: Lat ${lat.toFixed(5)}, Lng ${lng.toFixed(5)} (${new Date().toLocaleTimeString()})`;
+          },
+          (err) => {
+            coordTexto.innerText = "Error GPS: " + err.message;
+          },
+          { enableHighAccuracy: true, maximumAge: 1000 }
+        );
+
+        rastreoActivo = true;
+        btn.innerText = "Desconectar GPS en Vivo";
+        btn.className = "btn-gps-connect disconnect";
+        badge.innerText = "GPS Titular: Conectado en Vivo 🟢";
+        badge.className = "gps-badge-status active";
+      } else {
+        if (watchIdGPS !== null) {
+          navigator.geolocation.clearWatch(watchIdGPS);
+          watchIdGPS = null;
+        }
+        rastreoActivo = false;
+        btn.innerText = "Conectar GPS en Vivo";
+        btn.className = "btn-gps-connect";
+        badge.innerText = "GPS Titular: Desconectado";
+        badge.className = "gps-badge-status";
+        coordTexto.innerText = "Estado: Desconectado.";
+      }
+    }
+
     function renderizarMenu() {
       const contenedor = document.getElementById('contenedorEmpanadas');
       contenedor.innerHTML = '';
@@ -801,16 +1047,14 @@
       });
     }
 
-    // GESTIÓN DEL CARRITO
     function agregarAlPedido(id) {
       const prod = catalogo.find(p => p.id === id);
       if (!prod) return;
 
       if (!pedido[id]) {
-        pedido[id] = { nombre: prod.nombre, precio: prod.precio, cantidad: 0 };
+        pedido[id] = { id: prod.id, nombre: prod.nombre, precio: prod.precio, cantidad: 0 };
       }
       pedido[id].cantidad += 1;
-      // Actualizar precio en caso haya cambiado en admin
       pedido[id].precio = prod.precio;
       pedido[id].nombre = prod.nombre;
       actualizarBarraPedido();
@@ -833,7 +1077,7 @@
       const cartBar = document.getElementById('cartBar');
       if (unidades > 0) {
         cartBar.style.display = 'block';
-        document.getElementById('cartCount').innerText = `${unidades} empanada${unidades === 1 ? '' : 's'} seleccionada${unidades === 1 ? '' : 's'}`;
+        document.getElementById('cartCount').innerText = `${unidades} empanada${unidades === 1 ? '' : 's'}`;
         document.getElementById('cartTotal').innerText = `Total: S/ ${total.toFixed(2)}`;
       } else {
         cartBar.style.display = 'none';
@@ -846,63 +1090,94 @@
       boton.classList.add('active');
     }
 
-    // CAPTURA DE GEOLOCALIZACIÓN GPS
-    function capturarGPS() {
-      const geoStatus = document.getElementById('geoStatus');
-
+    function capturarGPSCliente() {
+      const status = document.getElementById('geoStatus');
       if (!navigator.geolocation) {
-        geoStatus.innerText = "Navegador sin soporte de GPS.";
+        status.innerText = "GPS no disponible.";
         return;
       }
-
-      geoStatus.innerText = "Obteniendo coordenadas GPS en tiempo real...";
+      status.innerText = "Obteniendo GPS...";
 
       navigator.geolocation.getCurrentPosition(
         (pos) => {
-          const lat = pos.coords.latitude;
-          const lon = pos.coords.longitude;
-          ubicacionUrl = `https://www.google.com/maps?q=${lat},${lon}`;
-          geoStatus.innerText = "✔ Ubicación obtenida correctamente";
-          geoStatus.classList.add('ready');
+          ubicacionClienteCoords = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude
+          };
+          status.innerText = "✔ Ubicación registrada para entrega";
+          status.classList.add('ready');
         },
-        (err) => {
-          ubicacionUrl = "";
-          geoStatus.classList.remove('ready');
-          geoStatus.innerText = "No se obtuvo GPS (escribe tu dirección al enviar).";
+        () => {
+          status.innerText = "No se pudo obtener GPS (indica dirección en chat).";
         },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        { enableHighAccuracy: true }
       );
     }
 
-    // REDIRECCIÓN A WHATSAPP
     function enviarPedidoWhatsApp() {
       let total = 0;
-      let detalle = "";
+      let detalleTexto = "";
+      let detalleProductos = [];
+      let itemsParaContabilidad = [];
+      let totalEmpanadas = 0;
 
       for (const k in pedido) {
         const item = pedido[k];
         const sub = item.cantidad * item.precio;
-        detalle += `• ${item.cantidad}x ${item.nombre} (S/ ${sub.toFixed(2)})%0A`;
+        detalleTexto += `• ${item.cantidad}x ${item.nombre} (S/ ${sub.toFixed(2)})%0A`;
+        detalleProductos.push(`${item.cantidad}x ${item.nombre}`);
+        
+        // Guardar estructura desglosada por tipo
+        itemsParaContabilidad.push({
+          id: item.id,
+          nombre: item.nombre,
+          precio: item.precio,
+          cantidad: item.cantidad,
+          subtotal: sub
+        });
+
+        totalEmpanadas += item.cantidad;
         total += sub;
       }
 
+      const fechaActual = new Date();
+      const fechaISO = fechaActual.toISOString().split('T')[0];
+      const fechaFormato = fechaActual.toLocaleString();
+
+      const nuevaVenta = {
+        id: Date.now(),
+        fecha: fechaFormato,
+        fechaFiltro: fechaISO,
+        productos: detalleProductos.join(', '),
+        items: itemsParaContabilidad,
+        unidades: totalEmpanadas,
+        total: total,
+        pago: metodoPago,
+        lat: ubicacionClienteCoords ? ubicacionClienteCoords.lat : null,
+        lng: ubicacionClienteCoords ? ubicacionClienteCoords.lng : null
+      };
+
+      registroVentas.push(nuevaVenta);
+      localStorage.setItem('regocijo_ventas', JSON.stringify(registroVentas));
+      dibujarVentasEnMapa();
+
       let mensaje = `*¡Hola Empanadas Regocijo! Deseo hacer un pedido:*%0A%0A`;
-      mensaje += `*Detalle:*%0A${detalle}%0A`;
+      mensaje += `*Detalle:*%0A${detalleTexto}%0A`;
       mensaje += `*Total a pagar:* S/ ${total.toFixed(2)}%0A`;
       mensaje += `*Método de pago:* ${metodoPago}%0A`;
 
-      if (ubicacionUrl) {
-        mensaje += `*Ubicación GPS:* ${ubicacionUrl}%0A`;
+      if (ubicacionClienteCoords) {
+        mensaje += `*Ubicación de entrega:* https://www.google.com/maps?q=${ubicacionClienteCoords.lat},${ubicacionClienteCoords.lng}%0A`;
       } else {
-        mensaje += `*Dirección:* (Por favor indicar dirección de entrega)%0A`;
+        mensaje += `*Dirección:* (Por favor confirmar dirección en Cusco)%0A`;
       }
 
       mensaje += `%0A¿Me confirman tiempo estimado de entrega?`;
 
       window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${mensaje}`, '_blank');
+      limpiarCarrito();
     }
 
-    // MODALES Y DASHBOARD ADMIN
     function abrirModalAdmin() {
       if (esAdminAutenticado) {
         mostrarDashboard();
@@ -921,14 +1196,32 @@
       const u = document.getElementById('adminUser').value.trim();
       const p = document.getElementById('adminPass').value.trim();
 
-      // Credenciales fijas
       if (u === 'admin' && p === 'regocijo123') {
         esAdminAutenticado = true;
         document.getElementById('modalLogin').style.display = 'none';
-        document.getElementById('btnAdminTrigger').innerText = "⚙️ Panel Admin";
+        document.getElementById('btnAdminTrigger').innerText = "⚙️ Panel Activo";
         mostrarDashboard();
       } else {
-        alert("Credenciales incorrectas. Verifica usuario y contraseña.");
+        alert("Credenciales incorrectas.");
+      }
+    }
+
+    function cambiarTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tabCatalogoContenido').style.display = 'none';
+      document.getElementById('tabContabilidadContenido').style.display = 'none';
+      document.getElementById('tabGPSContenido').style.display = 'none';
+
+      if (tab === 'catalogo') {
+        document.getElementById('tabBtnCatalogo').classList.add('active');
+        document.getElementById('tabCatalogoContenido').style.display = 'block';
+      } else if (tab === 'contabilidad') {
+        document.getElementById('tabBtnContabilidad').classList.add('active');
+        document.getElementById('tabContabilidadContenido').style.display = 'block';
+        actualizarReporteContable();
+      } else if (tab === 'gps') {
+        document.getElementById('tabBtnGPS').classList.add('active');
+        document.getElementById('tabGPSContenido').style.display = 'block';
       }
     }
 
@@ -939,21 +1232,22 @@
       catalogo.forEach((item, index) => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td><input type="text" id="edit-nom-${index}" value="${item.nombre}"></td>
-          <td><input type="number" step="0.5" id="edit-pre-${index}" value="${item.precio}"></td>
-          <td><input type="text" id="edit-desc-${index}" value="${item.descripcion}"></td>
-          <td><input type="text" id="edit-img-${index}" value="${item.imagen}"></td>
+          <td><input type="text" id="edit-nom-${index}" value="${item.nombre}" style="width:100%; padding:4px;"></td>
+          <td><input type="number" step="0.5" id="edit-pre-${index}" value="${item.precio}" style="width:70px; padding:4px;"></td>
+          <td><input type="text" id="edit-desc-${index}" value="${item.descripcion}" style="width:100%; padding:4px;"></td>
+          <td><input type="text" id="edit-img-${index}" value="${item.imagen}" style="width:100%; padding:4px;"></td>
           <td>
-            <button class="btn-table-action" onclick="guardarCambioFila(${index})">Guardar</button>
+            <button style="background:var(--primary); color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer;" onclick="guardarFila(${index})">Guardar</button>
           </td>
         `;
         tbody.appendChild(tr);
       });
 
       document.getElementById('modalDashboard').style.display = 'flex';
+      cambiarTab('catalogo');
     }
 
-    function guardarCambioFila(index) {
+    function guardarFila(index) {
       catalogo[index].nombre = document.getElementById(`edit-nom-${index}`).value;
       catalogo[index].precio = parseFloat(document.getElementById(`edit-pre-${index}`).value) || 0;
       catalogo[index].descripcion = document.getElementById(`edit-desc-${index}`).value;
@@ -961,20 +1255,96 @@
 
       localStorage.setItem('regocijo_menu', JSON.stringify(catalogo));
       renderizarMenu();
-      alert(`Empanada "${catalogo[index].nombre}" actualizada con éxito.`);
+      alert("Empanada actualizada.");
     }
 
-    function restablecerMenuOriginal() {
-      if (confirm("¿Deseas restablecer los precios y fotos originales?")) {
-        catalogo = JSON.parse(JSON.stringify(menuInicial));
-        localStorage.setItem('regocijo_menu', JSON.stringify(catalogo));
-        renderizarMenu();
-        mostrarDashboard();
+    // REPORTES CONTABLES: GENERAL Y POR TIPO DE EMPANADA
+    function actualizarReporteContable() {
+      const filtro = document.getElementById('filtroFechaContable').value;
+      const tbodyDetalle = document.getElementById('tablaContableBody');
+      const tbodyTipo = document.getElementById('tablaPorTipoBody');
+      tbodyDetalle.innerHTML = '';
+      tbodyTipo.innerHTML = '';
+
+      let ventasFiltradas = registroVentas;
+      if (filtro) {
+        ventasFiltradas = registroVentas.filter(v => v.fechaFiltro === filtro);
       }
+
+      let sumaTotal = 0;
+      let totalEmpanadas = 0;
+
+      // Diccionario acumulador por tipo de empanada
+      const desglosePorTipo = {};
+
+      ventasFiltradas.forEach(v => {
+        sumaTotal += v.total;
+        totalEmpanadas += v.unidades;
+
+        // Sumar cantidades y montos por cada tipo
+        if (v.items && Array.isArray(v.items)) {
+          v.items.forEach(it => {
+            if (!desglosePorTipo[it.nombre]) {
+              desglosePorTipo[it.nombre] = { cantidad: 0, ingresos: 0 };
+            }
+            desglosePorTipo[it.nombre].cantidad += it.cantidad;
+            desglosePorTipo[it.nombre].ingresos += it.subtotal;
+          });
+        }
+
+        const ubiTexto = (v.lat && v.lng) 
+          ? `<a href="https://www.google.com/maps?q=${v.lat},${v.lng}" target="_blank" style="color:#0066cc;">Ver Mapa</a>` 
+          : 'No enviada';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${v.fecha}</td>
+          <td>${v.productos}</td>
+          <td><strong>S/ ${v.total.toFixed(2)}</strong></td>
+          <td>${v.pago}</td>
+          <td>${ubiTexto}</td>
+        `;
+        tbodyDetalle.appendChild(tr);
+      });
+
+      // Renderizar tabla por tipo de empanada
+      const tiposArray = Object.keys(desglosePorTipo);
+      if (tiposArray.length === 0) {
+        tbodyTipo.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8; padding:12px;">No hay ventas registradas para este periodo.</td></tr>`;
+      } else {
+        tiposArray.forEach(nombreTipo => {
+          const datos = desglosePorTipo[nombreTipo];
+          const porcentaje = sumaTotal > 0 ? ((datos.ingresos / sumaTotal) * 100).toFixed(1) : 0;
+
+          const trTipo = document.createElement('tr');
+          trTipo.innerHTML = `
+            <td><strong>${nombreTipo}</strong></td>
+            <td>${datos.cantidad} unid.</td>
+            <td><strong>S/ ${datos.ingresos.toFixed(2)}</strong></td>
+            <td>
+              <span style="background:#ffedd5; color:var(--primary-dark); padding:2px 8px; border-radius:10px; font-weight:bold;">
+                ${porcentaje}%
+              </span>
+            </td>
+          `;
+          tbodyTipo.appendChild(trTipo);
+        });
+      }
+
+      document.getElementById('resumenMontoTotal').innerText = `S/ ${sumaTotal.toFixed(2)}`;
+      document.getElementById('resumenCantPedidos').innerText = ventasFiltradas.length;
+      document.getElementById('resumenEmpanadasVendidas').innerText = totalEmpanadas;
     }
 
-    // Inicializar catálogo al cargar
-    renderizarMenu();
+    function limpiarFiltroFecha() {
+      document.getElementById('filtroFechaContable').value = '';
+      actualizarReporteContable();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderizarMenu();
+      iniciarMapaCusco();
+    });
   </script>
 </body>
 </html>
