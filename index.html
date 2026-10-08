@@ -1071,4 +1071,540 @@
   </div>
 
   <!-- Leaflet JS -->
-  <script src="
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script>
+    const WHATSAPP_NUMERO = "51969773064";
+
+    const menuInicial = [
+      {
+        id: "emp-1",
+        nombre: "Carne Clásica Cortada",
+        tag: "Favorita de la casa",
+        descripcion: "Lomo fino trozado a cuchillo, cebolla caramelizada, huevo duro, aceituna y toque andino.",
+        precio: 6.50,
+        imagen: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: "emp-2",
+        nombre: "Ají de Gallina",
+        tag: "Súper Jugosa",
+        descripcion: "Cremoso guiso tradicional con pechuga deshilachada, ají amarillo y queso paria.",
+        precio: 6.50,
+        imagen: "https://images.unsplash.com/photo-1608039829572-78524f79c4c7?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: "emp-3",
+        nombre: "Queso Andino & Mozzarella",
+        tag: "Queso Fundido",
+        descripcion: "Doble queso fundido con toque de orégano aromático del valle sagrado.",
+        precio: 6.00,
+        imagen: "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: "emp-4",
+        nombre: "Champiñones al Ajillo",
+        tag: "Especial",
+        descripcion: "Champiñones salteados al vino blanco, cebolla glaseada y queso derretido.",
+        precio: 7.00,
+        imagen: "https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?auto=format&fit=crop&w=600&q=80"
+      }
+    ];
+
+    let catalogo = JSON.parse(localStorage.getItem('regocijo_menu')) || menuInicial;
+    let registroVentas = JSON.parse(localStorage.getItem('regocijo_ventas')) || [];
+
+    const pedido = {};
+    let metodoPago = "Efectivo";
+    let ubicacionClienteCoords = null;
+    let esAdminAutenticado = false;
+
+    let map = null;
+    let marcadorTitular = null;
+    let capaVentas = null;
+    let watchIdGPS = null;
+    let rastreoActivo = false;
+
+    // MAPA
+    function iniciarMapaCusco() {
+      const cuscoLat = -13.5167;
+      const cuscoLng = -71.9788;
+
+      map = L.map('cuscoMap').setView([cuscoLat, cuscoLng], 14);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contribuyentes'
+      }).addTo(map);
+
+      const iconoTitular = L.divIcon({
+        className: 'custom-div-icon',
+        html: "<div style='background-color:#c2410c; color:white; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; font-size:18px; border:2px solid white; box-shadow:0 2px 6px rgba(0,0,0,0.4);'>🥟</div>",
+        iconSize: [34, 34],
+        iconAnchor: [17, 17]
+      });
+
+      marcadorTitular = L.marker([cuscoLat, cuscoLng], { icon: iconoTitular }).addTo(map)
+        .bindPopup("<b>Empanadas Regocijo</b><br>Titular en Cusco");
+
+      capaVentas = L.layerGroup().addTo(map);
+      dibujarVentasEnMapa();
+    }
+
+    function dibujarVentasEnMapa() {
+      if (!capaVentas) return;
+      capaVentas.clearLayers();
+
+      registroVentas.forEach(v => {
+        if (v.lat && v.lng) {
+          const m = L.circleMarker([v.lat, v.lng], {
+            radius: 7,
+            fillColor: "#f59e0b",
+            color: "#b45309",
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+          });
+          m.bindPopup(`<b>Venta: S/ ${v.total.toFixed(2)}</b><br>${v.fecha}<br>${v.pago}`);
+          capaVentas.addLayer(m);
+        }
+      });
+    }
+
+    function alternarRastreoGPSTitular() {
+      const btn = document.getElementById('btnGPSSwitch');
+      const badge = document.getElementById('gpsBadgeHeader');
+      const coordTexto = document.getElementById('gpsCoordenadasTexto');
+
+      if (!rastreoActivo) {
+        if (!navigator.geolocation) {
+          alert("Geolocalización no soportada.");
+          return;
+        }
+
+        watchIdGPS = navigator.geolocation.watchPosition(
+          (pos) => {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+
+            if (marcadorTitular) {
+              marcadorTitular.setLatLng([lat, lng]);
+              map.panTo([lat, lng]);
+              marcadorTitular.getPopup().setContent(`<b>🥟 Titular en Ruta</b><br>Precisión: ${Math.round(pos.coords.accuracy)}m`).openOn(map);
+            }
+
+            coordTexto.innerText = `Transmitiendo: Lat ${lat.toFixed(5)}, Lng ${lng.toFixed(5)} (${new Date().toLocaleTimeString()})`;
+          },
+          (err) => {
+            coordTexto.innerText = "Error GPS: " + err.message;
+          },
+          { enableHighAccuracy: true, maximumAge: 1000 }
+        );
+
+        rastreoActivo = true;
+        btn.innerText = "Desconectar GPS en Vivo";
+        btn.className = "btn-gps-connect disconnect";
+        badge.innerText = "GPS Titular: Conectado en Vivo 🟢";
+        badge.className = "gps-badge-status active";
+      } else {
+        if (watchIdGPS !== null) {
+          navigator.geolocation.clearWatch(watchIdGPS);
+          watchIdGPS = null;
+        }
+        rastreoActivo = false;
+        btn.innerText = "Conectar GPS en Vivo";
+        btn.className = "btn-gps-connect";
+        badge.innerText = "GPS Titular: Desconectado";
+        badge.className = "gps-badge-status";
+        coordTexto.innerText = "Estado: Desconectado.";
+      }
+    }
+
+    // CATÁLOGO
+    function renderizarMenu() {
+      const contenedor = document.getElementById('contenedorEmpanadas');
+      contenedor.innerHTML = '';
+
+      catalogo.forEach(item => {
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="card-img-wrapper">
+            <span class="card-tag">${item.tag || 'Artesanal'}</span>
+            <img src="${item.imagen}" alt="${item.nombre}">
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">${item.nombre}</h4>
+            <p class="card-desc">${item.descripcion}</p>
+            <div class="card-footer">
+              <span class="price">S/ ${parseFloat(item.precio).toFixed(2)}</span>
+              <button class="btn-add" onclick="agregarAlPedido('${item.id}')">+ Agregar</button>
+            </div>
+          </div>
+        `;
+        contenedor.appendChild(card);
+      });
+    }
+
+    // GESTIÓN DEL CARRITO
+    function agregarAlPedido(id) {
+      const prod = catalogo.find(p => p.id === id);
+      if (!prod) return;
+
+      if (!pedido[id]) {
+        pedido[id] = { id: prod.id, nombre: prod.nombre, precio: prod.precio, cantidad: 0 };
+      }
+      pedido[id].cantidad += 1;
+      pedido[id].precio = prod.precio;
+      pedido[id].nombre = prod.nombre;
+
+      actualizarBadgeFlotante();
+      renderizarDrawerCarrito();
+    }
+
+    function cambiarCantidad(id, delta) {
+      if (pedido[id]) {
+        pedido[id].cantidad += delta;
+        if (pedido[id].cantidad <= 0) {
+          delete pedido[id];
+        }
+      }
+      actualizarBadgeFlotante();
+      renderizarDrawerCarrito();
+    }
+
+    function limpiarCarrito() {
+      for (const k in pedido) delete pedido[k];
+      actualizarBadgeFlotante();
+      renderizarDrawerCarrito();
+    }
+
+    function actualizarBadgeFlotante() {
+      let unidades = 0;
+      for (const k in pedido) {
+        unidades += pedido[k].cantidad;
+      }
+      document.getElementById('badgeTotalItems').innerText = unidades;
+    }
+
+    function abrirDrawerCarrito() {
+      renderizarDrawerCarrito();
+      document.getElementById('drawerCarritoOverlay').style.display = 'flex';
+    }
+
+    function cerrarDrawerCarrito() {
+      document.getElementById('drawerCarritoOverlay').style.display = 'none';
+    }
+
+    // Cerrar al dar click fuera del drawer
+    document.getElementById('drawerCarritoOverlay').addEventListener('click', (e) => {
+      if (e.target.id === 'drawerCarritoOverlay') {
+        cerrarDrawerCarrito();
+      }
+    });
+
+    function renderizarDrawerCarrito() {
+      const lista = document.getElementById('listaItemsCarrito');
+      lista.innerHTML = '';
+
+      let total = 0;
+      let totalItems = 0;
+
+      const keys = Object.keys(pedido);
+      if (keys.length === 0) {
+        lista.innerHTML = `<div style="text-align:center; color:#94a3b8; padding:24px 0; font-size:14px;">El carrito está vacío. Agrega tus empanadas favoritas.</div>`;
+      } else {
+        keys.forEach(k => {
+          const item = pedido[k];
+          const subtotal = item.cantidad * item.precio;
+          total += subtotal;
+          totalItems += item.cantidad;
+
+          const row = document.createElement('div');
+          row.className = 'cart-item-row';
+          row.innerHTML = `
+            <div class="cart-item-info">
+              <div class="cart-item-title">${item.nombre}</div>
+              <div class="cart-item-sub">S/ ${item.precio.toFixed(2)} c/u</div>
+            </div>
+            <div class="cart-controls">
+              <button class="btn-qty" onclick="cambiarCantidad('${k}', -1)">-</button>
+              <span style="font-weight:bold; font-size:13px; min-width:18px; text-align:center;">${item.cantidad}</span>
+              <button class="btn-qty" onclick="cambiarCantidad('${k}', 1)">+</button>
+            </div>
+            <div class="cart-item-price">S/ ${subtotal.toFixed(2)}</div>
+          `;
+          lista.appendChild(row);
+        });
+      }
+
+      document.getElementById('drawerTotalMonto').innerText = `S/ ${total.toFixed(2)}`;
+      document.getElementById('badgeTotalItems').innerText = totalItems;
+    }
+
+    function elegirPago(metodo, boton) {
+      metodoPago = metodo;
+      document.querySelectorAll('.btn-pay-option').forEach(btn => btn.classList.remove('active'));
+      boton.classList.add('active');
+    }
+
+    function capturarGPSCliente() {
+      const status = document.getElementById('geoStatus');
+      if (!navigator.geolocation) {
+        status.innerText = "GPS no disponible en este dispositivo.";
+        return;
+      }
+      status.innerText = "Localizando coordenadas GPS...";
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          ubicacionClienteCoords = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude
+          };
+          status.innerText = "✔ Ubicación exacta registrada correctamente";
+          status.classList.add('ready');
+        },
+        () => {
+          status.innerText = "No se pudo obtener GPS (indica tu dirección por chat).";
+        },
+        { enableHighAccuracy: true }
+      );
+    }
+
+    function enviarPedidoWhatsApp() {
+      const keys = Object.keys(pedido);
+      if (keys.length === 0) {
+        alert("Por favor agrega al menos una empanada al carrito antes de confirmar.");
+        return;
+      }
+
+      let total = 0;
+      let detalleTexto = "";
+      let detalleProductos = [];
+      let itemsParaContabilidad = [];
+      let totalEmpanadas = 0;
+
+      keys.forEach(k => {
+        const item = pedido[k];
+        const sub = item.cantidad * item.precio;
+        detalleTexto += `• ${item.cantidad}x ${item.nombre} (S/ ${sub.toFixed(2)})%0A`;
+        detalleProductos.push(`${item.cantidad}x ${item.nombre}`);
+        
+        itemsParaContabilidad.push({
+          id: item.id,
+          nombre: item.nombre,
+          precio: item.precio,
+          cantidad: item.cantidad,
+          subtotal: sub
+        });
+
+        totalEmpanadas += item.cantidad;
+        total += sub;
+      });
+
+      const fechaActual = new Date();
+      const fechaISO = fechaActual.toISOString().split('T')[0];
+      const fechaFormato = fechaActual.toLocaleString();
+
+      const nuevaVenta = {
+        id: Date.now(),
+        fecha: fechaFormato,
+        fechaFiltro: fechaISO,
+        productos: detalleProductos.join(', '),
+        items: itemsParaContabilidad,
+        unidades: totalEmpanadas,
+        total: total,
+        pago: metodoPago,
+        lat: ubicacionClienteCoords ? ubicacionClienteCoords.lat : null,
+        lng: ubicacionClienteCoords ? ubicacionClienteCoords.lng : null
+      };
+
+      registroVentas.push(nuevaVenta);
+      localStorage.setItem('regocijo_ventas', JSON.stringify(registroVentas));
+      dibujarVentasEnMapa();
+
+      let mensaje = `*¡Hola Empanadas Regocijo! Deseo hacer un pedido:*%0A%0A`;
+      mensaje += `*Detalle del pedido:*%0A${detalleTexto}%0A`;
+      mensaje += `*Total a pagar:* S/ ${total.toFixed(2)}%0A`;
+      mensaje += `*Método de pago:* ${metodoPago}%0A`;
+
+      if (ubicacionClienteCoords) {
+        mensaje += `*Ubicación exacta GPS:* https://www.google.com/maps?q=${ubicacionClienteCoords.lat},${ubicacionClienteCoords.lng}%0A`;
+      } else {
+        mensaje += `*Dirección:* (Por favor indicar dirección de entrega en Cusco)%0A`;
+      }
+
+      mensaje += `%0A¿Me confirman tiempo estimado de entrega?`;
+
+      window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${mensaje}`, '_blank');
+      
+      limpiarCarrito();
+      cerrarDrawerCarrito();
+    }
+
+    // PANEL ADMIN
+    function abrirModalAdmin() {
+      if (esAdminAutenticado) {
+        mostrarDashboard();
+      } else {
+        document.getElementById('modalLogin').style.display = 'flex';
+      }
+    }
+
+    function cerrarModales() {
+      document.getElementById('modalLogin').style.display = 'none';
+      document.getElementById('modalDashboard').style.display = 'none';
+    }
+
+    function autenticarAdmin(e) {
+      e.preventDefault();
+      const u = document.getElementById('adminUser').value.trim();
+      const p = document.getElementById('adminPass').value.trim();
+
+      if (u === 'admin' && p === 'regocijo123') {
+        esAdminAutenticado = true;
+        document.getElementById('modalLogin').style.display = 'none';
+        document.getElementById('btnAdminTrigger').innerText = "⚙️ Panel Activo";
+        mostrarDashboard();
+      } else {
+        alert("Credenciales incorrectas.");
+      }
+    }
+
+    function cambiarTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tabCatalogoContenido').style.display = 'none';
+      document.getElementById('tabContabilidadContenido').style.display = 'none';
+      document.getElementById('tabGPSContenido').style.display = 'none';
+
+      if (tab === 'catalogo') {
+        document.getElementById('tabBtnCatalogo').classList.add('active');
+        document.getElementById('tabCatalogoContenido').style.display = 'block';
+      } else if (tab === 'contabilidad') {
+        document.getElementById('tabBtnContabilidad').classList.add('active');
+        document.getElementById('tabContabilidadContenido').style.display = 'block';
+        actualizarReporteContable();
+      } else if (tab === 'gps') {
+        document.getElementById('tabBtnGPS').classList.add('active');
+        document.getElementById('tabGPSContenido').style.display = 'block';
+      }
+    }
+
+    function mostrarDashboard() {
+      const tbody = document.getElementById('tablaDashboardBody');
+      tbody.innerHTML = '';
+
+      catalogo.forEach((item, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><input type="text" id="edit-nom-${index}" value="${item.nombre}" style="width:100%; padding:4px;"></td>
+          <td><input type="number" step="0.5" id="edit-pre-${index}" value="${item.precio}" style="width:70px; padding:4px;"></td>
+          <td><input type="text" id="edit-desc-${index}" value="${item.descripcion}" style="width:100%; padding:4px;"></td>
+          <td><input type="text" id="edit-img-${index}" value="${item.imagen}" style="width:100%; padding:4px;"></td>
+          <td>
+            <button style="background:var(--primary); color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer;" onclick="guardarFila(${index})">Guardar</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('modalDashboard').style.display = 'flex';
+      cambiarTab('catalogo');
+    }
+
+    function guardarFila(index) {
+      catalogo[index].nombre = document.getElementById(`edit-nom-${index}`).value;
+      catalogo[index].precio = parseFloat(document.getElementById(`edit-pre-${index}`).value) || 0;
+      catalogo[index].descripcion = document.getElementById(`edit-desc-${index}`).value;
+      catalogo[index].imagen = document.getElementById(`edit-img-${index}`).value;
+
+      localStorage.setItem('regocijo_menu', JSON.stringify(catalogo));
+      renderizarMenu();
+      alert("Empanada actualizada.");
+    }
+
+    function actualizarReporteContable() {
+      const filtro = document.getElementById('filtroFechaContable').value;
+      const tbodyDetalle = document.getElementById('tablaContableBody');
+      const tbodyTipo = document.getElementById('tablaPorTipoBody');
+      tbodyDetalle.innerHTML = '';
+      tbodyTipo.innerHTML = '';
+
+      let ventasFiltradas = registroVentas;
+      if (filtro) {
+        ventasFiltradas = registroVentas.filter(v => v.fechaFiltro === filtro);
+      }
+
+      let sumaTotal = 0;
+      let totalEmpanadas = 0;
+      const desglosePorTipo = {};
+
+      ventasFiltradas.forEach(v => {
+        sumaTotal += v.total;
+        totalEmpanadas += v.unidades;
+
+        if (v.items && Array.isArray(v.items)) {
+          v.items.forEach(it => {
+            if (!desglosePorTipo[it.nombre]) {
+              desglosePorTipo[it.nombre] = { cantidad: 0, ingresos: 0 };
+            }
+            desglosePorTipo[it.nombre].cantidad += it.cantidad;
+            desglosePorTipo[it.nombre].ingresos += it.subtotal;
+          });
+        }
+
+        const ubiTexto = (v.lat && v.lng) 
+          ? `<a href="https://www.google.com/maps?q=${v.lat},${v.lng}" target="_blank" style="color:#0066cc;">Ver Mapa</a>` 
+          : 'No enviada';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${v.fecha}</td>
+          <td>${v.productos}</td>
+          <td><strong>S/ ${v.total.toFixed(2)}</strong></td>
+          <td>${v.pago}</td>
+          <td>${ubiTexto}</td>
+        `;
+        tbodyDetalle.appendChild(tr);
+      });
+
+      const tiposArray = Object.keys(desglosePorTipo);
+      if (tiposArray.length === 0) {
+        tbodyTipo.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8; padding:12px;">No hay ventas registradas para este periodo.</td></tr>`;
+      } else {
+        tiposArray.forEach(nombreTipo => {
+          const datos = desglosePorTipo[nombreTipo];
+          const porcentaje = sumaTotal > 0 ? ((datos.ingresos / sumaTotal) * 100).toFixed(1) : 0;
+
+          const trTipo = document.createElement('tr');
+          trTipo.innerHTML = `
+            <td><strong>${nombreTipo}</strong></td>
+            <td>${datos.cantidad} unid.</td>
+            <td><strong>S/ ${datos.ingresos.toFixed(2)}</strong></td>
+            <td>
+              <span style="background:#ffedd5; color:var(--primary-dark); padding:2px 8px; border-radius:10px; font-weight:bold;">
+                ${porcentaje}%
+              </span>
+            </td>
+          `;
+          tbodyTipo.appendChild(trTipo);
+        });
+      }
+
+      document.getElementById('resumenMontoTotal').innerText = `S/ ${sumaTotal.toFixed(2)}`;
+      document.getElementById('resumenCantPedidos').innerText = ventasFiltradas.length;
+      document.getElementById('resumenEmpanadasVendidas').innerText = totalEmpanadas;
+    }
+
+    function limpiarFiltroFecha() {
+      document.getElementById('filtroFechaContable').value = '';
+      actualizarReporteContable();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderizarMenu();
+      iniciarMapaCusco();
+    });
+  </script>
+</body>
+</html>
