@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -363,7 +362,7 @@
       background: var(--primary);
     }
 
-    /* GLOBITO FLOTANTE AZUL PEQUEÑO */
+    /* GLOBITO FLOTANTE AZUL */
     .chat-bubble-btn {
       position: fixed;
       bottom: 24px;
@@ -576,7 +575,6 @@
       text-align: right;
     }
 
-    /* BOTÓN BALDECITO / PAPELERA */
     .btn-trash-item {
       background: none;
       border: none;
@@ -711,19 +709,118 @@
       background: #1eb857;
     }
 
-    @media (max-width: 600px) {
-      .grid-payments {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .chat-bubble-btn {
-        bottom: 20px;
-        right: 20px;
-        width: 56px;
-        height: 56px;
-      }
+    /* NUEVO PANEL ADMIN OPTIMIZADO PARA MÓVILES (CARDS EN VEZ DE TABLA COMPRIMIDA) */
+    .admin-cards-container {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 12px;
     }
 
-    /* DASHBOARD Y MODAL ADMIN */
+    .admin-edit-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .admin-field-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .admin-field-row.inline-row {
+      flex-direction: row;
+      gap: 10px;
+    }
+
+    .admin-field-row label {
+      font-size: 11px;
+      font-weight: 800;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .admin-input {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+      color: var(--dark);
+      background: var(--white);
+    }
+
+    .admin-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .admin-card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .btn-admin-save {
+      flex: 2;
+      background: var(--primary);
+      color: var(--white);
+      border: none;
+      padding: 9px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .btn-admin-save:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-admin-delete {
+      flex: 1;
+      background: #fee2e2;
+      color: #dc2626;
+      border: 1px solid #fca5a5;
+      padding: 9px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .btn-admin-delete:hover {
+      background: #fecaca;
+    }
+
+    .btn-add-product-main {
+      width: 100%;
+      background: #16a34a;
+      color: var(--white);
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 10px rgba(22, 163, 74, 0.2);
+    }
+
+    .btn-add-product-main:hover {
+      background: #15803d;
+    }
+
+    /* MODALES & DASHBOARD */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -733,26 +830,26 @@
       z-index: 2100;
       justify-content: center;
       align-items: center;
-      padding: 14px;
+      padding: 12px;
     }
 
     .modal-box {
       background: var(--white);
       border-radius: var(--radius);
-      padding: 22px;
+      padding: 20px;
       width: 100%;
       max-width: 440px;
       position: relative;
     }
 
     .modal-box.wide {
-      max-width: 950px;
-      max-height: 88vh;
+      max-width: 650px;
+      max-height: 90vh;
       overflow-y: auto;
     }
 
     .modal-box h3 {
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 800;
       color: var(--dark);
       margin-bottom: 6px;
@@ -760,22 +857,23 @@
 
     .dashboard-tabs {
       display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
+      gap: 6px;
+      margin-bottom: 14px;
       border-bottom: 2px solid #f1f5f9;
       padding-bottom: 8px;
-      flex-wrap: wrap;
+      overflow-x: auto;
     }
 
     .tab-btn {
       background: none;
       border: none;
       font-weight: 700;
-      font-size: 13px;
-      padding: 6px 12px;
+      font-size: 12px;
+      padding: 6px 10px;
       color: #64748b;
       cursor: pointer;
       border-radius: 6px;
+      white-space: nowrap;
     }
 
     .tab-btn.active {
@@ -813,11 +911,11 @@
 
     .accounting-filter {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       align-items: center;
       margin-bottom: 14px;
       background: #f8fafc;
-      padding: 10px 14px;
+      padding: 10px;
       border-radius: 8px;
       flex-wrap: wrap;
     }
@@ -831,35 +929,35 @@
 
     .accounting-summary {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
-      margin-bottom: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
     }
 
     .summary-card {
       background: #fff7ed;
       border: 1px solid #ffedd5;
-      padding: 12px;
+      padding: 10px;
       border-radius: 8px;
     }
 
     .summary-card span {
-      font-size: 11px;
+      font-size: 10px;
       color: #78716c;
       font-weight: bold;
     }
 
     .summary-card h4 {
-      font-size: 20px;
+      font-size: 18px;
       color: var(--primary-dark);
       font-weight: 900;
     }
 
     .section-subtitle {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 800;
       color: var(--dark);
-      margin: 18px 0 8px;
+      margin: 16px 0 8px;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -893,6 +991,21 @@
       font-size: 24px;
       cursor: pointer;
       color: #64748b;
+    }
+
+    @media (max-width: 600px) {
+      .grid-payments {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .chat-bubble-btn {
+        bottom: 20px;
+        right: 20px;
+        width: 56px;
+        height: 56px;
+      }
+      .modal-box.wide {
+        padding: 14px;
+      }
     }
   </style>
 </head>
@@ -955,7 +1068,7 @@
     <div class="grid-empanadas" id="contenedorEmpanadas"></div>
   </section>
 
-  <!-- GLOBITO AZUL FLOTANTE EN LA ESQUINA INFERIOR DERECHA -->
+  <!-- GLOBITO AZUL FLOTANTE -->
   <button class="chat-bubble-btn" id="btnGlobitoChat" onclick="abrirModalCarrito()">
     <svg class="chat-bubble-icon" viewBox="0 0 24 24">
       <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
@@ -976,7 +1089,7 @@
         
         <div>
           <div class="cart-header-actions">
-            <span class="popup-section-label">Empanadas disponibles y seleccionadas:</span>
+            <span class="popup-section-label">Empanadas seleccionadas:</span>
             <button type="button" class="btn-vaciar-cart" onclick="vaciarPedidoConConfirmacion()">
               🗑️ Vaciar pedido
             </button>
@@ -1042,7 +1155,7 @@
     </div>
   </div>
 
-  <!-- MODAL DASHBOARD -->
+  <!-- MODAL DASHBOARD CON EDICIÓN CÓMODA PARA MÓVILES -->
   <div class="modal-overlay" id="modalDashboard">
     <div class="modal-box wide">
       <button class="btn-close-modal" onclick="cerrarModales()" style="position:absolute; top:12px; right:14px;">&times;</button>
@@ -1054,22 +1167,17 @@
         <button class="tab-btn" id="tabBtnGPS" onclick="cambiarTab('gps')">📡 GPS en Vivo Titular</button>
       </div>
 
-      <!-- CATÁLOGO -->
+      <!-- SECCIÓN CATÁLOGO OPTIMIZADA: TARJETAS VERTICALES GRANDES -->
       <div id="tabCatalogoContenido">
-        <div class="table-container">
-          <table class="custom-table">
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Precio (S/)</th>
-                <th>Descripción</th>
-                <th>Imagen (URL)</th>
-                <th>Acción</th>
-              </tr>
-            </thead>
-            <tbody id="tablaDashboardBody"></tbody>
-          </table>
+        
+        <button type="button" class="btn-add-product-main" onclick="agregarNuevoProducto()">
+          ➕ Agregar Nueva Empanada
+        </button>
+
+        <div class="admin-cards-container" id="adminCardsList">
+          <!-- Tarjetas generadas dinámicamente con inputs grandes -->
         </div>
+
       </div>
 
       <!-- REPORTE CONTABLE -->
@@ -1188,7 +1296,6 @@
     let catalogo = JSON.parse(localStorage.getItem('regocijo_menu')) || menuInicial;
     let registroVentas = JSON.parse(localStorage.getItem('regocijo_ventas')) || [];
 
-    // Estructura del pedido que garantiza que TODOS los productos del catálogo existan
     const pedido = {};
     function sincronizarEstructuraPedido() {
       catalogo.forEach(item => {
@@ -1305,7 +1412,7 @@
       }
     }
 
-    // CATÁLOGO
+    // CATÁLOGO PÚBLICO
     function renderizarMenu() {
       const contenedor = document.getElementById('contenedorEmpanadas');
       contenedor.innerHTML = '';
@@ -1350,7 +1457,6 @@
       }
     }
 
-    // EL BALDECITO RESETEA EL PRODUCTO A CERO SIN QUITARLO
     function anularProducto(id) {
       if (pedido[id]) {
         pedido[id].cantidad = 0;
@@ -1358,7 +1464,6 @@
       }
     }
 
-    // VACIAR PEDIDO: RESETEA TODAS LAS CANTIDADES A CERO
     function vaciarPedidoConConfirmacion() {
       if (confirm("¿Deseas reiniciar las cantidades de tu pedido a cero?")) {
         for (const k in pedido) {
@@ -1390,7 +1495,6 @@
       const listContainer = document.getElementById('popupItemsList');
       listContainer.innerHTML = '';
 
-      // Muestra siempre todos los productos del catálogo con sus cantidades correspondientes
       catalogo.forEach(catItem => {
         const item = pedido[catItem.id] || { id: catItem.id, nombre: catItem.nombre, precio: catItem.precio, cantidad: 0 };
         const subtotal = item.cantidad * item.precio;
@@ -1419,10 +1523,8 @@
         listContainer.appendChild(row);
       });
 
-      // Actualizar número en el globito azul
       document.getElementById('badgeContador').innerText = `${totalUnidades}`;
 
-      // Detalle del total a pagar incluyendo la cantidad exacta de productos seleccionados
       const textoCantidad = `${totalUnidades} ${totalUnidades === 1 ? 'empanada seleccionada' : 'empanadas seleccionadas'}`;
       document.getElementById('cartLabelTotalConCantidad').innerText = `Total a pagar (${textoCantidad}):`;
       document.getElementById('cartTotalMonto').innerText = `S/ ${totalMonto.toFixed(2)}`;
@@ -1527,7 +1629,6 @@
       const url = `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensaje)}`;
       window.open(url, '_blank');
       
-      // Resetear a 0 tras enviar la orden
       for (const k in pedido) {
         pedido[k].cantidad = 0;
       }
@@ -1535,7 +1636,7 @@
       cerrarModalCarrito();
     }
 
-    // PANEL ADMIN
+    // ADMINISTRACIÓN & DASHBOARD: NUEVO RENDERIZADO EN TARJETAS PARA CELULARES
     function abrirModalAdmin() {
       if (esAdminAutenticado) {
         mostrarDashboard();
@@ -1584,21 +1685,40 @@
     }
 
     function mostrarDashboard() {
-      const tbody = document.getElementById('tablaDashboardBody');
-      tbody.innerHTML = '';
+      const container = document.getElementById('adminCardsList');
+      container.innerHTML = '';
 
       catalogo.forEach((item, index) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><input type="text" id="edit-nom-${index}" value="${item.nombre}" style="width:100%; padding:4px;"></td>
-          <td><input type="number" step="0.5" id="edit-pre-${index}" value="${item.precio}" style="width:70px; padding:4px;"></td>
-          <td><input type="text" id="edit-desc-${index}" value="${item.descripcion}" style="width:100%; padding:4px;"></td>
-          <td><input type="text" id="edit-img-${index}" value="${item.imagen}" style="width:100%; padding:4px;"></td>
-          <td>
-            <button style="background:var(--primary); color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer;" onclick="guardarFila(${index})">Guardar</button>
-          </td>
+        const card = document.createElement('div');
+        card.className = 'admin-edit-card';
+        card.innerHTML = `
+          <div class="admin-field-row inline-row">
+            <div style="flex:2;">
+              <label>Nombre de la Empanada</label>
+              <input type="text" class="admin-input" id="edit-nom-${index}" value="${item.nombre}">
+            </div>
+            <div style="flex:1;">
+              <label>Precio (S/)</label>
+              <input type="number" step="0.5" class="admin-input" id="edit-pre-${index}" value="${item.precio}">
+            </div>
+          </div>
+
+          <div class="admin-field-row">
+            <label>Descripción / Ingredientes</label>
+            <input type="text" class="admin-input" id="edit-desc-${index}" value="${item.descripcion}">
+          </div>
+
+          <div class="admin-field-row">
+            <label>Enlace de Imagen (URL)</label>
+            <input type="text" class="admin-input" id="edit-img-${index}" value="${item.imagen}">
+          </div>
+
+          <div class="admin-card-actions">
+            <button type="button" class="btn-admin-save" onclick="guardarFila(${index})">💾 Guardar Cambios</button>
+            <button type="button" class="btn-admin-delete" onclick="eliminarProducto(${index})">🗑️ Eliminar</button>
+          </div>
         `;
-        tbody.appendChild(tr);
+        container.appendChild(card);
       });
 
       document.getElementById('modalDashboard').style.display = 'flex';
@@ -1606,16 +1726,50 @@
     }
 
     function guardarFila(index) {
-      catalogo[index].nombre = document.getElementById(`edit-nom-${index}`).value;
+      catalogo[index].nombre = document.getElementById(`edit-nom-${index}`).value.trim();
       catalogo[index].precio = parseFloat(document.getElementById(`edit-pre-${index}`).value) || 0;
-      catalogo[index].descripcion = document.getElementById(`edit-desc-${index}`).value;
-      catalogo[index].imagen = document.getElementById(`edit-img-${index}`).value;
+      catalogo[index].descripcion = document.getElementById(`edit-desc-${index}`).value.trim();
+      catalogo[index].imagen = document.getElementById(`edit-img-${index}`).value.trim();
 
       localStorage.setItem('regocijo_menu', JSON.stringify(catalogo));
       sincronizarEstructuraPedido();
       renderizarMenu();
       actualizarVistaPopup();
-      alert("Empanada actualizada.");
+      alert(`Empanada "${catalogo[index].nombre}" actualizada correctamente.`);
+    }
+
+    function eliminarProducto(index) {
+      const nombre = catalogo[index].nombre;
+      if (confirm(`¿Estás seguro de que deseas eliminar permanentemente "${nombre}" del catálogo?`)) {
+        const idEliminado = catalogo[index].id;
+        catalogo.splice(index, 1);
+        delete pedido[idEliminado];
+
+        localStorage.setItem('regocijo_menu', JSON.stringify(catalogo));
+        sincronizarEstructuraPedido();
+        renderizarMenu();
+        actualizarVistaPopup();
+        mostrarDashboard(); // Refresca las tarjetas
+      }
+    }
+
+    function agregarNuevoProducto() {
+      const nuevoId = "emp-" + Date.now();
+      const nuevoItem = {
+        id: nuevoId,
+        nombre: "Nueva Empanada",
+        tag: "Novedad",
+        descripcion: "Descripción de los ingredientes frescos.",
+        precio: 6.50,
+        imagen: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=600&q=80"
+      };
+
+      catalogo.unshift(nuevoItem); // Añadir al inicio para editarla de inmediato
+      localStorage.setItem('regocijo_menu', JSON.stringify(catalogo));
+      sincronizarEstructuraPedido();
+      renderizarMenu();
+      actualizarVistaPopup();
+      mostrarDashboard();
     }
 
     function actualizarReporteContable() {
@@ -1705,4 +1859,3 @@
   </script>
 </body>
 </html>
-
