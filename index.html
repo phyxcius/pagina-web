@@ -1,4 +1,6 @@
-
+Aquí tienes el código completo en un solo archivo HTML con los dos comportamientos ajustados:
+ * Vaciar pedido sin eliminar la lista: Al presionar "🗑️ Vaciar pedido", todos los productos se mantienen visibles en la lista pero sus cantidades pasan automáticamente a 0 y el total a S/ 0.00.
+ * Icono de baldecito/papelera (🗑️): Ubicado al costado del subtotal de cada empanada para anular individualmente ese ítem o resetearlo a 0.
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -503,7 +505,7 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      max-height: 180px;
+      max-height: 220px;
       overflow-y: auto;
     }
 
@@ -555,12 +557,39 @@
       background: #cbd5e1;
     }
 
+    .cart-item-price-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: 10px;
+    }
+
     .cart-item-price {
       font-size: 13px;
       font-weight: 800;
       color: var(--primary);
-      min-width: 60px;
+      min-width: 55px;
       text-align: right;
+    }
+
+    /* BOTÓN BALDECITO / PAPELERA */
+    .btn-trash-item {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      border-radius: 4px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .btn-trash-item:hover {
+      color: #dc2626;
+      background: #fee2e2;
     }
 
     .popup-section-label {
@@ -690,7 +719,7 @@
       }
     }
 
-    /* DASHBOARD Y MODAL ADMIN */
+    /* MODALES & DASHBOARD */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -1155,7 +1184,19 @@
     let catalogo = JSON.parse(localStorage.getItem('regocijo_menu')) || menuInicial;
     let registroVentas = JSON.parse(localStorage.getItem('regocijo_ventas')) || [];
 
+    // Estructura del pedido inicializada con todos los productos del menú en 0
     const pedido = {};
+    function inicializarEstructuraPedido() {
+      catalogo.forEach(item => {
+        if (!pedido[item.id]) {
+          pedido[item.id] = { id: item.id, nombre: item.nombre, precio: item.precio, cantidad: 0 };
+        } else {
+          pedido[item.id].nombre = item.nombre;
+          pedido[item.id].precio = item.precio;
+        }
+      });
+    }
+
     let metodoPago = "Yape";
     let ubicacionClienteCoords = null;
     let esAdminAutenticado = false;
@@ -1288,35 +1329,42 @@
 
     // GESTIÓN DEL CARRITO
     function agregarAlPedido(id) {
-      const prod = catalogo.find(p => p.id === id);
-      if (!prod) return;
-
       if (!pedido[id]) {
-        pedido[id] = { id: prod.id, nombre: prod.nombre, precio: prod.precio, cantidad: 0 };
+        const prod = catalogo.find(p => p.id === id);
+        if (prod) {
+          pedido[id] = { id: prod.id, nombre: prod.nombre, precio: prod.precio, cantidad: 0 };
+        }
       }
-      pedido[id].cantidad += 1;
-      pedido[id].precio = prod.precio;
-      pedido[id].nombre = prod.nombre;
-
-      actualizarVistaPopup();
+      if (pedido[id]) {
+        pedido[id].cantidad += 1;
+        actualizarVistaPopup();
+      }
     }
 
     function cambiarCantidad(id, delta) {
       if (pedido[id]) {
         pedido[id].cantidad += delta;
-        if (pedido[id].cantidad <= 0) {
-          delete pedido[id];
+        if (pedido[id].cantidad < 0) {
+          pedido[id].cantidad = 0;
         }
+        actualizarVistaPopup();
       }
-      actualizarVistaPopup();
     }
 
-    function vaciarPedidoConConfirmacion() {
-      const totalKeys = Object.keys(pedido).length;
-      if (totalKeys === 0) return;
+    // ANULAR/ELIMINAR INDIVIDUAL CON EL BALDECITO
+    function anularProducto(id) {
+      if (pedido[id]) {
+        pedido[id].cantidad = 0;
+        actualizarVistaPopup();
+      }
+    }
 
-      if (confirm("¿Estás seguro de que deseas vaciar tu carrito para ordenar de nuevo?")) {
-        for (const k in pedido) delete pedido[k];
+    // RESETEAR TODAS LAS CANTIDADES A CERO SIN BORRAR LOS PRODUCTOS
+    function vaciarPedidoConConfirmacion() {
+      if (confirm("¿Deseas reiniciar las cantidades de tu pedido a cero?")) {
+        for (const k in pedido) {
+          pedido[k].cantidad = 0;
+        }
         actualizarVistaPopup();
       }
     }
@@ -1341,34 +1389,34 @@
       const listContainer = document.getElementById('popupItemsList');
       listContainer.innerHTML = '';
 
-      const keys = Object.keys(pedido);
+      // Se muestran todos los productos del catálogo manteniendo las cantidades (incluso en 0)
+      catalogo.forEach(catItem => {
+        const item = pedido[catItem.id] || { id: catItem.id, nombre: catItem.nombre, precio: catItem.precio, cantidad: 0 };
+        const subtotal = item.cantidad * item.precio;
+        unidades += item.cantidad;
+        total += subtotal;
 
-      if (keys.length === 0) {
-        listContainer.innerHTML = `<div style="text-align:center; color:#94a3b8; padding:16px 0; font-size:13px;">Tu pedido está vacío. Elige tus empanadas del menú.</div>`;
-      } else {
-        keys.forEach(k => {
-          const item = pedido[k];
-          const subtotal = item.cantidad * item.precio;
-          unidades += item.cantidad;
-          total += subtotal;
-
-          const row = document.createElement('div');
-          row.className = 'cart-item-row';
-          row.innerHTML = `
-            <div class="cart-item-info">
-              <div class="cart-item-title">${item.nombre}</div>
-              <div class="cart-item-sub">S/ ${item.precio.toFixed(2)} c/u</div>
-            </div>
-            <div class="cart-controls">
-              <button class="btn-qty" onclick="cambiarCantidad('${k}', -1)">-</button>
-              <span style="font-weight:bold; font-size:12px; min-width:16px; text-align:center;">${item.cantidad}</span>
-              <button class="btn-qty" onclick="cambiarCantidad('${k}', 1)">+</button>
-            </div>
+        const row = document.createElement('div');
+        row.className = 'cart-item-row';
+        row.innerHTML = `
+          <div class="cart-item-info">
+            <div class="cart-item-title">${item.nombre}</div>
+            <div class="cart-item-sub">S/ ${item.precio.toFixed(2)} c/u</div>
+          </div>
+          <div class="cart-controls">
+            <button class="btn-qty" onclick="cambiarCantidad('${item.id}', -1)">-</button>
+            <span style="font-weight:bold; font-size:12px; min-width:16px; text-align:center;">${item.cantidad}</span>
+            <button class="btn-qty" onclick="cambiarCantidad('${item.id}', 1)">+</button>
+          </div>
+          <div class="cart-item-price-wrapper">
             <div class="cart-item-price">S/ ${subtotal.toFixed(2)}</div>
-          `;
-          listContainer.appendChild(row);
-        });
-      }
+            <button type="button" class="btn-trash-item" title="Anular este producto" onclick="anularProducto('${item.id}')">
+              🗑️
+            </button>
+          </div>
+        `;
+        listContainer.appendChild(row);
+      });
 
       // Actualizar número en el globito azul flotante y monto total
       document.getElementById('badgeContador').innerText = `${unidades}`;
@@ -1405,11 +1453,12 @@
       );
     }
 
-    // ENVÍO DE PEDIDO A WHATSAPP CON EL FORMATO EXACTO
+    // ENVÍO DE PEDIDO A WHATSAPP
     function enviarPedidoWhatsApp() {
-      const keys = Object.keys(pedido);
-      if (keys.length === 0) {
-        alert("Por favor agrega al menos una empanada a tu orden.");
+      const productosConCantidad = Object.values(pedido).filter(item => item.cantidad > 0);
+
+      if (productosConCantidad.length === 0) {
+        alert("Por favor selecciona al menos una empanada con cantidad mayor a 0.");
         return;
       }
 
@@ -1419,8 +1468,7 @@
       let itemsParaContabilidad = [];
       let totalEmpanadas = 0;
 
-      keys.forEach(k => {
-        const item = pedido[k];
+      productosConCantidad.forEach(item => {
         const sub = item.cantidad * item.precio;
         detalleTexto += `• ${item.cantidad}x ${item.nombre} (S/ ${sub.toFixed(2)})\n`;
         detalleProductos.push(`${item.cantidad}x ${item.nombre}`);
@@ -1474,7 +1522,10 @@
       const url = `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensaje)}`;
       window.open(url, '_blank');
       
-      for (const k in pedido) delete pedido[k];
+      // Resetear a 0 tras enviar
+      for (const k in pedido) {
+        pedido[k].cantidad = 0;
+      }
       actualizarVistaPopup();
       cerrarModalCarrito();
     }
@@ -1556,7 +1607,9 @@
       catalogo[index].imagen = document.getElementById(`edit-img-${index}`).value;
 
       localStorage.setItem('regocijo_menu', JSON.stringify(catalogo));
+      inicializarEstructuraPedido();
       renderizarMenu();
+      actualizarVistaPopup();
       alert("Empanada actualizada.");
     }
 
@@ -1639,6 +1692,7 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      inicializarEstructuraPedido();
       renderizarMenu();
       iniciarMapaCusco();
       actualizarVistaPopup();
