@@ -33,7 +33,7 @@
       background-color: var(--gray-light);
       color: var(--text);
       line-height: 1.6;
-      padding-bottom: 90px;
+      padding-bottom: 120px;
     }
 
     /* HEADER & NAVEGACIÓN */
@@ -363,100 +363,104 @@
       background: var(--primary);
     }
 
-    /* BOTÓN FLOTANTE DEL CARRITO (INFERIOR DERECHA) */
-    .cart-floating-btn {
+    /* POPUP FLOTANTE INFERIOR DE CARRITO */
+    .cart-bottom-popup {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: var(--primary);
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 650px;
+      background: var(--white);
+      border-radius: 18px 18px 0 0;
+      box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.25);
+      z-index: 1500;
+      border: 1px solid #fed7aa;
+      border-bottom: none;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* BARRA CABECERA DEL POPUP (SIEMPRE VISIBLE) */
+    .cart-popup-bar {
+      background: var(--dark);
       color: var(--white);
-      border: none;
-      border-radius: 50px;
-      padding: 14px 22px;
-      font-size: 15px;
-      font-weight: 800;
-      box-shadow: 0 10px 25px rgba(194, 65, 12, 0.45);
+      padding: 14px 20px;
+      border-radius: 17px 17px 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       cursor: pointer;
+      user-select: none;
+    }
+
+    .cart-popup-title {
       display: flex;
       align-items: center;
       gap: 10px;
-      z-index: 1500;
-      transition: transform 0.2s, background 0.2s;
+      font-size: 15px;
+      font-weight: 800;
     }
 
-    .cart-floating-btn:hover {
-      transform: scale(1.05);
-      background: var(--primary-dark);
-    }
-
-    .cart-badge {
+    .cart-count-pill {
       background: var(--accent);
       color: var(--dark);
       font-size: 12px;
       font-weight: 900;
-      padding: 2px 8px;
-      border-radius: 20px;
+      padding: 2px 9px;
+      border-radius: 12px;
     }
 
-    /* MODAL DESPLEGABLE DEL CARRITO */
-    .cart-drawer-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.65);
-      backdrop-filter: blur(4px);
-      z-index: 2000;
-      justify-content: flex-end;
-      align-items: stretch;
-    }
-
-    .cart-drawer {
-      background: var(--white);
-      width: 100%;
-      max-width: 460px;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      box-shadow: -10px 0 25px rgba(0,0,0,0.2);
-      animation: slideIn 0.25s ease-out;
-    }
-
-    @keyframes slideIn {
-      from { transform: translateX(100%); }
-      to { transform: translateX(0); }
-    }
-
-    .cart-drawer-header {
-      padding: 18px 20px;
-      background: var(--dark);
-      color: var(--white);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .cart-drawer-header h3 {
-      font-size: 18px;
-      font-weight: 800;
+    .cart-popup-right {
       display: flex;
       align-items: center;
-      gap: 8px;
-    }
-
-    .cart-drawer-body {
-      padding: 20px;
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-
-    /* LISTA DE ITEMS DENTRO DEL CARRITO */
-    .cart-items-list {
-      display: flex;
-      flex-direction: column;
       gap: 12px;
+    }
+
+    .cart-popup-total {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--accent);
+    }
+
+    .cart-popup-toggle-icon {
+      font-size: 14px;
+      transition: transform 0.3s;
+    }
+
+    .cart-bottom-popup.open .cart-popup-toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    /* CONTENIDO DESPLEGABLE DEL POPUP */
+    .cart-popup-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease-in-out;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart-bottom-popup.open .cart-popup-content {
+      max-height: 75vh;
+      overflow-y: auto;
+    }
+
+    .cart-popup-inner {
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* FILAS DE PRODUCTOS EN EL POPUP */
+    .cart-items-box {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+      padding-right: 4px;
     }
 
     .cart-item-row {
@@ -464,8 +468,8 @@
       justify-content: space-between;
       align-items: center;
       background: #f8fafc;
-      padding: 10px 14px;
-      border-radius: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
       border: 1px solid #e2e8f0;
     }
 
@@ -474,28 +478,28 @@
     }
 
     .cart-item-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--dark);
     }
 
     .cart-item-sub {
-      font-size: 12px;
+      font-size: 11px;
       color: #64748b;
     }
 
     .cart-controls {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .btn-qty {
       background: #e2e8f0;
       border: none;
-      width: 26px;
-      height: 26px;
-      border-radius: 6px;
+      width: 24px;
+      height: 24px;
+      border-radius: 5px;
       font-weight: bold;
       cursor: pointer;
       display: flex;
@@ -508,16 +512,16 @@
     }
 
     .cart-item-price {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
       color: var(--primary);
-      min-width: 65px;
+      min-width: 60px;
       text-align: right;
     }
 
-    /* MÉTODOS DE PAGO DENTRO DEL CARRITO */
-    .drawer-section-title {
-      font-size: 12px;
+    /* MÉTODOS DE PAGO EN EL POPUP */
+    .popup-section-label {
+      font-size: 11px;
       text-transform: uppercase;
       font-weight: 800;
       color: #64748b;
@@ -535,8 +539,8 @@
       background: #f1f5f9;
       border: 1px solid #cbd5e1;
       color: var(--dark);
-      padding: 8px 4px;
-      border-radius: 8px;
+      padding: 7px 4px;
+      border-radius: 6px;
       font-size: 12px;
       font-weight: 700;
       cursor: pointer;
@@ -550,15 +554,15 @@
       color: var(--white);
     }
 
-    /* GEOLOCALIZACIÓN DENTRO DEL CARRITO */
+    /* GEOLOCALIZACIÓN CLIENTE */
     .geo-box {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       background: #fff7ed;
       border: 1px solid #fed7aa;
-      padding: 12px;
-      border-radius: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
     }
 
     .btn-geo {
@@ -567,7 +571,7 @@
       border: none;
       padding: 8px 12px;
       border-radius: 6px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
@@ -581,7 +585,7 @@
     }
 
     .geo-status {
-      font-size: 12px;
+      font-size: 11px;
       color: #78716c;
       text-align: center;
     }
@@ -591,30 +595,7 @@
       font-weight: bold;
     }
 
-    /* FOOTER DEL CARRITO */
-    .cart-drawer-footer {
-      padding: 18px 20px;
-      background: #f8fafc;
-      border-top: 1px solid #e2e8f0;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .cart-total-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 18px;
-      font-weight: 900;
-      color: var(--dark);
-    }
-
-    .cart-total-amount {
-      color: var(--primary);
-      font-size: 22px;
-    }
-
+    /* BOTÓN CONFIRMAR WHATSAPP */
     .btn-order-wsp {
       background: #25d366;
       color: var(--white);
@@ -807,12 +788,14 @@
       color: #64748b;
     }
 
-    .btn-close-drawer {
-      background: none;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-      color: var(--white);
+    @media (max-width: 600px) {
+      .cart-bottom-popup {
+        width: 100%;
+        border-radius: 14px 14px 0 0;
+      }
+      .grid-payments {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
   </style>
 </head>
@@ -868,44 +851,46 @@
     <div class="menu-header">
       <div>
         <h3>Nuestras Variedades</h3>
-        <p style="font-size: 13px; color: #78716c;">Elige tus empanadas y agrégalas al carrito para ordenar.</p>
+        <p style="font-size: 13px; color: #78716c;">Elige tus empanadas y agrégalas para armar tu pedido.</p>
       </div>
       <button onclick="limpiarCarrito()" style="background:none; border:none; color: var(--primary); font-weight:700; cursor:pointer; font-size:13px;">
-        Vaciar Carrito
+        Vaciar Pedido
       </button>
     </div>
 
     <div class="grid-empanadas" id="contenedorEmpanadas"></div>
   </section>
 
-  <!-- BOTÓN FLOTANTE INFERIOR DERECHA -->
-  <button class="cart-floating-btn" id="btnFlotanteCarrito" onclick="abrirDrawerCarrito()">
-    <span>🥟 Mi Pedido</span>
-    <span class="cart-badge" id="badgeTotalItems">0</span>
-  </button>
-
-  <!-- MODAL / DRAWER LATERAL DEL CARRITO -->
-  <div class="cart-drawer-overlay" id="drawerCarritoOverlay">
-    <div class="cart-drawer">
-      
-      <div class="cart-drawer-header">
-        <h3>🥟 Tu Orden de Empanadas</h3>
-        <button class="btn-close-drawer" onclick="cerrarDrawerCarrito()">&times;</button>
+  <!-- POPUP FLOTANTE INFERIOR DE CARRITO -->
+  <div class="cart-bottom-popup" id="cartPopup">
+    
+    <!-- BARRA CABECERA DEL POPUP -->
+    <div class="cart-popup-bar" onclick="alternarPopupCarrito()">
+      <div class="cart-popup-title">
+        <span>🥟 Tu Pedido</span>
+        <span class="cart-count-pill" id="popupContadorUnidades">0 empanadas</span>
       </div>
+      <div class="cart-popup-right">
+        <span class="cart-popup-total" id="popupTotalBarra">S/ 0.00</span>
+        <span class="cart-popup-toggle-icon" id="popupFlecha">▲</span>
+      </div>
+    </div>
 
-      <div class="cart-drawer-body">
+    <!-- CONTENIDO DESPLEGABLE CON LISTA, PAGO, GPS Y WHATSAPP -->
+    <div class="cart-popup-content" id="popupContent">
+      <div class="cart-popup-inner">
         
-        <!-- LISTADO DE PRODUCTOS -->
+        <!-- LISTA DE PRODUCTOS SELECCIONADOS -->
         <div>
-          <div class="drawer-section-title">Detalle del Pedido</div>
-          <div class="cart-items-list" id="listaItemsCarrito">
-            <!-- Filas dinámicas generadas con JS -->
+          <div class="popup-section-label">Empanadas seleccionadas:</div>
+          <div class="cart-items-box" id="popupItemsList">
+            <!-- Filas generadas automáticamente -->
           </div>
         </div>
 
-        <!-- SELECCIÓN DE MÉTODO DE PAGO -->
+        <!-- SELECTOR DE MÉTODO DE PAGO -->
         <div>
-          <div class="drawer-section-title">Forma de Pago</div>
+          <div class="popup-section-label">Forma de Pago:</div>
           <div class="grid-payments">
             <button type="button" class="btn-pay-option active" onclick="elegirPago('Efectivo', this)">💵 Efectivo</button>
             <button type="button" class="btn-pay-option" onclick="elegirPago('Yape', this)">🟣 Yape</button>
@@ -914,28 +899,21 @@
           </div>
         </div>
 
-        <!-- ACTIVAR DIRECCIÓN EXACTA (GPS) -->
+        <!-- CAPTURA DE UBICACIÓN EXACTA DEL CLIENTE -->
         <div>
-          <div class="drawer-section-title">Dirección de Entrega</div>
+          <div class="popup-section-label">Lugar de Entrega:</div>
           <div class="geo-box">
             <button type="button" class="btn-geo" onclick="capturarGPSCliente()">📍 Activar mi ubicación exacta</button>
-            <span class="geo-status" id="geoStatus">Presiona el botón para enviar tu coordenada GPS</span>
+            <span class="geo-status" id="geoStatus">Envía tus coordenadas para la entrega directa</span>
           </div>
         </div>
 
-      </div>
-
-      <!-- TOTAL Y CONFIRMACIÓN POR WHATSAPP -->
-      <div class="cart-drawer-footer">
-        <div class="cart-total-row">
-          <span>Total a pagar:</span>
-          <span class="cart-total-amount" id="drawerTotalMonto">S/ 0.00</span>
-        </div>
+        <!-- BOTÓN DE CONFIRMACIÓN POR WHATSAPP -->
         <button class="btn-order-wsp" onclick="enviarPedidoWhatsApp()">
-          <span>Confirmar y Enviar a WhatsApp</span> 💬
+          <span>Confirmar Pedido al WhatsApp (+51 969 773 064)</span> 💬
         </button>
-      </div>
 
+      </div>
     </div>
   </div>
 
@@ -1125,7 +1103,7 @@
     let watchIdGPS = null;
     let rastreoActivo = false;
 
-    // MAPA
+    // MAPA CUSCO
     function iniciarMapaCusco() {
       const cuscoLat = -13.5167;
       const cuscoLng = -71.9788;
@@ -1245,7 +1223,7 @@
       });
     }
 
-    // GESTIÓN DEL CARRITO
+    // GESTIÓN DEL CARRITO & POPUP FLOTANTE INFERIOR
     function agregarAlPedido(id) {
       const prod = catalogo.find(p => p.id === id);
       if (!prod) return;
@@ -1257,8 +1235,7 @@
       pedido[id].precio = prod.precio;
       pedido[id].nombre = prod.nombre;
 
-      actualizarBadgeFlotante();
-      renderizarDrawerCarrito();
+      actualizarVistaPopup();
     }
 
     function cambiarCantidad(id, delta) {
@@ -1268,56 +1245,35 @@
           delete pedido[id];
         }
       }
-      actualizarBadgeFlotante();
-      renderizarDrawerCarrito();
+      actualizarVistaPopup();
     }
 
     function limpiarCarrito() {
       for (const k in pedido) delete pedido[k];
-      actualizarBadgeFlotante();
-      renderizarDrawerCarrito();
+      actualizarVistaPopup();
     }
 
-    function actualizarBadgeFlotante() {
+    function alternarPopupCarrito() {
+      const popup = document.getElementById('cartPopup');
+      popup.classList.toggle('open');
+    }
+
+    function actualizarVistaPopup() {
       let unidades = 0;
-      for (const k in pedido) {
-        unidades += pedido[k].cantidad;
-      }
-      document.getElementById('badgeTotalItems').innerText = unidades;
-    }
-
-    function abrirDrawerCarrito() {
-      renderizarDrawerCarrito();
-      document.getElementById('drawerCarritoOverlay').style.display = 'flex';
-    }
-
-    function cerrarDrawerCarrito() {
-      document.getElementById('drawerCarritoOverlay').style.display = 'none';
-    }
-
-    // Cerrar al dar click fuera del drawer
-    document.getElementById('drawerCarritoOverlay').addEventListener('click', (e) => {
-      if (e.target.id === 'drawerCarritoOverlay') {
-        cerrarDrawerCarrito();
-      }
-    });
-
-    function renderizarDrawerCarrito() {
-      const lista = document.getElementById('listaItemsCarrito');
-      lista.innerHTML = '';
-
       let total = 0;
-      let totalItems = 0;
+      const listContainer = document.getElementById('popupItemsList');
+      listContainer.innerHTML = '';
 
       const keys = Object.keys(pedido);
+
       if (keys.length === 0) {
-        lista.innerHTML = `<div style="text-align:center; color:#94a3b8; padding:24px 0; font-size:14px;">El carrito está vacío. Agrega tus empanadas favoritas.</div>`;
+        listContainer.innerHTML = `<div style="text-align:center; color:#94a3b8; padding:12px; font-size:12px;">Tu pedido está vacío. Elige tus empanadas del menú.</div>`;
       } else {
         keys.forEach(k => {
           const item = pedido[k];
           const subtotal = item.cantidad * item.precio;
+          unidades += item.cantidad;
           total += subtotal;
-          totalItems += item.cantidad;
 
           const row = document.createElement('div');
           row.className = 'cart-item-row';
@@ -1328,17 +1284,18 @@
             </div>
             <div class="cart-controls">
               <button class="btn-qty" onclick="cambiarCantidad('${k}', -1)">-</button>
-              <span style="font-weight:bold; font-size:13px; min-width:18px; text-align:center;">${item.cantidad}</span>
+              <span style="font-weight:bold; font-size:12px; min-width:16px; text-align:center;">${item.cantidad}</span>
               <button class="btn-qty" onclick="cambiarCantidad('${k}', 1)">+</button>
             </div>
             <div class="cart-item-price">S/ ${subtotal.toFixed(2)}</div>
           `;
-          lista.appendChild(row);
+          listContainer.appendChild(row);
         });
       }
 
-      document.getElementById('drawerTotalMonto').innerText = `S/ ${total.toFixed(2)}`;
-      document.getElementById('badgeTotalItems').innerText = totalItems;
+      // Actualizar contadores y totales en la barra del popup
+      document.getElementById('popupContadorUnidades').innerText = `${unidades} ${unidades === 1 ? 'empanada' : 'empanadas'}`;
+      document.getElementById('popupTotalBarra').innerText = `Total: S/ ${total.toFixed(2)}`;
     }
 
     function elegirPago(metodo, boton) {
@@ -1350,10 +1307,10 @@
     function capturarGPSCliente() {
       const status = document.getElementById('geoStatus');
       if (!navigator.geolocation) {
-        status.innerText = "GPS no disponible en este dispositivo.";
+        status.innerText = "GPS no disponible en este navegador.";
         return;
       }
-      status.innerText = "Localizando coordenadas GPS...";
+      status.innerText = "Obteniendo coordenadas GPS en tiempo real...";
 
       navigator.geolocation.getCurrentPosition(
         (pos) => {
@@ -1361,11 +1318,11 @@
             lat: pos.coords.latitude,
             lng: pos.coords.longitude
           };
-          status.innerText = "✔ Ubicación exacta registrada correctamente";
+          status.innerText = "✔ Ubicación registrada para entrega";
           status.classList.add('ready');
         },
         () => {
-          status.innerText = "No se pudo obtener GPS (indica tu dirección por chat).";
+          status.innerText = "No se pudo obtener GPS (indica dirección en el chat).";
         },
         { enableHighAccuracy: true }
       );
@@ -1374,7 +1331,7 @@
     function enviarPedidoWhatsApp() {
       const keys = Object.keys(pedido);
       if (keys.length === 0) {
-        alert("Por favor agrega al menos una empanada al carrito antes de confirmar.");
+        alert("Por favor agrega al menos una empanada a tu orden.");
         return;
       }
 
@@ -1439,10 +1396,10 @@
       window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${mensaje}`, '_blank');
       
       limpiarCarrito();
-      cerrarDrawerCarrito();
+      document.getElementById('cartPopup').classList.remove('open');
     }
 
-    // PANEL ADMIN
+    // ADMINISTRACIÓN & DASHBOARD
     function abrirModalAdmin() {
       if (esAdminAutenticado) {
         mostrarDashboard();
@@ -1523,6 +1480,7 @@
       alert("Empanada actualizada.");
     }
 
+    // REPORTES CONTABLES
     function actualizarReporteContable() {
       const filtro = document.getElementById('filtroFechaContable').value;
       const tbodyDetalle = document.getElementById('tablaContableBody');
@@ -1604,6 +1562,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       renderizarMenu();
       iniciarMapaCusco();
+      actualizarVistaPopup();
     });
   </script>
 </body>
