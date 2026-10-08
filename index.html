@@ -3,440 +3,978 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Empanadas Regocijo</title>
+  <title>Empanadas Regocijo | Tradición Artesanal y Sabor Único</title>
   <style>
+    :root {
+      --primary: #c2410c;
+      --primary-dark: #9a3412;
+      --accent: #f59e0b;
+      --accent-light: #fef3c7;
+      --dark: #1c1917;
+      --gray-light: #f8fafc;
+      --text: #44403c;
+      --white: #ffffff;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+      --radius: 14px;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     }
+
     body {
-      background-color: #fdfbf7;
-      color: #2b2b2b;
-      padding-bottom: 300px;
+      background-color: var(--gray-light);
+      color: var(--text);
+      line-height: 1.6;
+      padding-bottom: 240px;
     }
+
+    /* HEADER & NAVEGACIÓN */
     header {
-      background-color: #c2410c;
-      color: white;
-      text-align: center;
-      padding: 28px 16px;
+      background: var(--white);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     }
-    header h1 {
-      font-size: 30px;
-      margin-bottom: 6px;
-    }
-    header p {
-      font-size: 15px;
-      opacity: 0.95;
-    }
-    .contenedor {
-      max-width: 900px;
-      margin: 24px auto;
-      padding: 0 16px;
-    }
-    .titulo-menu {
-      font-size: 22px;
-      margin-bottom: 20px;
-      color: #7c2d12;
-      border-bottom: 2px solid #fdba74;
-      padding-bottom: 8px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 18px;
-    }
-    .tarjeta {
-      background: white;
-      border: 1px solid #fed7aa;
-      border-radius: 12px;
-      padding: 18px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.04);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .tarjeta h3 {
-      font-size: 18px;
-      color: #9a3412;
-      margin-bottom: 6px;
-    }
-    .tarjeta p {
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 14px;
-      line-height: 1.4;
-    }
-    .precio-fila {
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .precio {
-      font-size: 20px;
-      font-weight: bold;
-      color: #c2410c;
-    }
-    .btn-sumar {
-      background-color: #c2410c;
-      color: white;
-      border: none;
-      padding: 8px 14px;
-      font-weight: bold;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .btn-sumar:hover {
-      background-color: #9a3412;
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--dark);
     }
 
-    /* PANEL FIJO DE CHECKOUT INFERIOR */
-    .barra-pedido {
+    .brand-icon {
+      background: var(--primary);
+      color: var(--white);
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 20px;
+    }
+
+    .brand-text h1 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+      color: var(--dark);
+    }
+
+    .brand-text span {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-admin-login {
+      background: #f1f5f9;
+      color: var(--dark);
+      border: 1px solid #cbd5e1;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-admin-login:hover {
+      background: #e2e8f0;
+    }
+
+    .nav-cta {
+      background: var(--primary);
+      color: var(--white);
+      padding: 9px 18px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .nav-cta:hover {
+      background: var(--primary-dark);
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+      padding: 50px 20px 70px;
+      text-align: center;
+      border-bottom: 1px solid #fed7aa;
+    }
+
+    .hero-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .badge-hero {
+      display: inline-block;
+      background: #ffedd5;
+      color: var(--primary-dark);
+      font-weight: 700;
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+      border: 1px solid #fdba74;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .hero h2 {
+      font-size: 38px;
+      font-weight: 900;
+      color: var(--dark);
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: #78716c;
+      margin-bottom: 24px;
+    }
+
+    .hero-features {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .feature-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--white);
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    /* SECCIÓN DE PRODUCTOS */
+    .section-menu {
+      max-width: 1200px;
+      margin: -30px auto 40px;
+      padding: 0 20px;
+    }
+
+    .menu-header {
+      background: var(--white);
+      padding: 18px 24px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 26px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .menu-header h3 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--dark);
+    }
+
+    .grid-empanadas {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid #f1f5f9;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+
+    .card-img-wrapper {
+      position: relative;
+      height: 180px;
+      background: #fed7aa;
+      overflow: hidden;
+    }
+
+    .card-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(28, 25, 23, 0.85);
+      backdrop-filter: blur(4px);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .card-body {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: #78716c;
+      margin-bottom: 16px;
+      flex: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid #f3f4f6;
+    }
+
+    .price {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .btn-add {
+      background: var(--dark);
+      color: var(--white);
+      border: none;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn-add:hover {
+      background: var(--primary);
+    }
+
+    /* BARRA FLOTANTE DE CHECKOUT */
+    .cart-bar {
       position: fixed;
       bottom: 0;
       left: 0;
       width: 100%;
       background: #1c1917;
-      color: white;
+      color: var(--white);
       padding: 16px 20px;
+      box-shadow: 0 -8px 25px rgba(0,0,0,0.3);
+      z-index: 99;
       display: none;
-      box-shadow: 0 -4px 14px rgba(0,0,0,0.3);
-      z-index: 999;
     }
-    .barra-contenido {
+
+    .cart-inner {
       max-width: 900px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
-    .resumen-fila {
+
+    .cart-summary {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .total-texto {
-      font-size: 20px;
-      font-weight: bold;
-      color: #febb02;
-    }
-    .btn-limpiar {
-      background: none;
-      border: none;
-      color: #fdba74;
-      font-size: 13px;
-      cursor: pointer;
-      text-decoration: underline;
+
+    .cart-count {
+      font-size: 14px;
+      color: #a8a29e;
+      font-weight: 600;
     }
 
-    /* BOTONES DE MÉTODO DE PAGO */
-    .opciones-titulo {
-      font-size: 13px;
-      color: #d6d3d1;
-      text-transform: uppercase;
-      font-weight: bold;
-      letter-spacing: 0.5px;
+    .cart-total {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--accent);
     }
-    .grid-pagos {
+
+    .payment-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #d6d3d1;
+      font-weight: bold;
+    }
+
+    .grid-payments {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 8px;
     }
-    .btn-pago {
+
+    .btn-pay-option {
       background: #292524;
       border: 1px solid #44403c;
       color: #e7e5e4;
       padding: 8px 4px;
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 13px;
-      font-weight: bold;
+      font-weight: 700;
       cursor: pointer;
       text-align: center;
       transition: all 0.2s;
     }
-    .btn-pago.activo {
-      background: #c2410c;
+
+    .btn-pay-option.active {
+      background: var(--primary);
       border-color: #ea580c;
-      color: #fff;
+      color: var(--white);
     }
 
-    /* GEOLOCALIZACIÓN */
-    .seccion-ubicacion {
+    .geo-box {
       display: flex;
       align-items: center;
       gap: 10px;
       background: #292524;
       padding: 8px 12px;
-      border-radius: 6px;
+      border-radius: 8px;
     }
+
     .btn-geo {
-      background: #3b82f6;
-      color: white;
+      background: #2563eb;
+      color: #fff;
       border: none;
-      padding: 6px 12px;
-      border-radius: 4px;
+      padding: 6px 14px;
+      border-radius: 6px;
       font-size: 12px;
-      font-weight: bold;
+      font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
     }
+
     .btn-geo:hover {
-      background: #2563eb;
+      background: #1d4ed8;
     }
-    .estado-geo {
+
+    .geo-status {
       font-size: 12px;
       color: #a8a29e;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .estado-geo.exito {
+
+    .geo-status.ready {
       color: #4ade80;
     }
 
-    /* BOTÓN WHATSAPP */
-    .btn-wsp {
-      background-color: #25d366;
-      color: white;
-      border: none;
+    .btn-order-wsp {
+      background: #25d366;
+      color: var(--white);
       padding: 12px;
-      font-size: 16px;
-      font-weight: bold;
-      border-radius: 8px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 15px;
+      border: none;
       cursor: pointer;
-      width: 100%;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       gap: 8px;
-    }
-    .btn-wsp:hover {
-      background-color: #1eb857;
+      transition: background 0.2s;
     }
 
-    @media (max-width: 600px) {
-      .grid-pagos {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .seccion-ubicacion {
-        flex-direction: column;
-        align-items: stretch;
-      }
+    .btn-order-wsp:hover {
+      background: #1eb857;
+    }
+
+    /* MODALES: LOGIN & DASHBOARD */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .modal-box {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 24px;
+      width: 100%;
+      max-width: 440px;
+      position: relative;
+      box-shadow: var(--shadow);
+    }
+
+    .modal-box.wide {
+      max-width: 820px;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    .modal-box h3 {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+
+    .modal-sub {
+      font-size: 13px;
+      color: #78716c;
+      margin-bottom: 16px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .form-group input:focus, .form-group textarea:focus {
+      border-color: var(--primary);
+    }
+
+    .btn-modal-action {
+      width: 100%;
+      background: var(--primary);
+      color: var(--white);
+      border: none;
+      padding: 11px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .btn-modal-action:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-close-modal {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      color: #64748b;
+    }
+
+    /* TABLA DASHBOARD */
+    .dashboard-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+
+    .dashboard-table th, .dashboard-table td {
+      border: 1px solid #e2e8f0;
+      padding: 10px;
+      text-align: left;
+    }
+
+    .dashboard-table th {
+      background: #f8fafc;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .dashboard-table input {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    .btn-table-action {
+      background: var(--primary);
+      color: var(--white);
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .hero h2 { font-size: 28px; }
+      .grid-payments { grid-template-columns: repeat(2, 1fr); }
+      .geo-box { flex-direction: column; align-items: stretch; }
     }
   </style>
 </head>
 <body>
 
+  <!-- NAVEGACIÓN -->
   <header>
-    <h1>Empanadas Regocijo</h1>
-    <p>Empanadas artesanales calientitas · Pedidos directos a WhatsApp</p>
-  </header>
-
-  <main class="contenedor">
-    <h2 class="titulo-menu">Nuestras Variedades</h2>
-    
-    <div class="grid">
-      <!-- Empanada 1 -->
-      <div class="tarjeta">
-        <div>
-          <h3>Carne Clásica Cortada</h3>
-          <p>Lomo fino cortado a cuchillo, cebolla caramelizada, huevo duro y aceituna.</p>
+    <div class="nav-container">
+      <a href="#" class="brand">
+        <div class="brand-icon">🥟</div>
+        <div class="brand-text">
+          <h1>Empanadas Regocijo</h1>
+          <span>Horneadas al Momento</span>
         </div>
-        <div class="precio-fila">
-          <span class="precio">S/ 6.50</span>
-          <button class="btn-sumar" onclick="sumar('Carne Clásica', 6.50)">+ Agregar</button>
-        </div>
-      </div>
-
-      <!-- Empanada 2 -->
-      <div class="tarjeta">
-        <div>
-          <h3>Ají de Gallina</h3>
-          <p>Guiso cremoso de pechuga deshilachada con ají amarillo y queso paria.</p>
-        </div>
-        <div class="precio-fila">
-          <span class="precio">S/ 6.50</span>
-          <button class="btn-sumar" onclick="sumar('Ají de Gallina', 6.50)">+ Agregar</button>
-        </div>
-      </div>
-
-      <!-- Empanada 3 -->
-      <div class="tarjeta">
-        <div>
-          <h3>Queso Andino & Mozzarella</h3>
-          <p>Doble queso fundido con toque de orégano aromático del valle.</p>
-        </div>
-        <div class="precio-fila">
-          <span class="precio">S/ 6.00</span>
-          <button class="btn-sumar" onclick="sumar('Queso Andino', 6.00)">+ Agregar</button>
-        </div>
-      </div>
-
-      <!-- Empanada 4 -->
-      <div class="tarjeta">
-        <div>
-          <h3>Champiñones al Ajillo</h3>
-          <p>Champiñones salteados al vino blanco, cebolla glaseada y queso derretido.</p>
-        </div>
-        <div class="precio-fila">
-          <span class="precio">S/ 7.00</span>
-          <button class="btn-sumar" onclick="sumar('Champiñones', 7.00)">+ Agregar</button>
-        </div>
+      </a>
+      <div class="nav-actions">
+        <button class="btn-admin-login" id="btnAdminTrigger" onclick="abrirModalAdmin()">
+          🔒 Admin
+        </button>
+        <a href="#menu" class="nav-cta">Pedir</a>
       </div>
     </div>
-  </main>
+  </header>
 
-  <!-- BARRA INFERIOR DE PEDIDO Y CONFIRMACIÓN -->
-  <div class="barra-pedido" id="barra">
-    <div class="barra-contenido">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-container">
+      <span class="badge-hero">Masa artesanal extra crocante & relleno jugoso</span>
+      <h2>Sabor que alegra el día en cada bocado</h2>
+      <p>Elaboradas con recetas tradicionales, cortes selectos y horneadas al momento para que te lleguen calientitas a la puerta.</p>
       
-      <div class="resumen-fila">
-        <div>
-          <span id="cantTotal">0 empanadas</span> | 
-          <span class="total-texto" id="montoTotal">Total: S/ 0.00</span>
-        </div>
-        <button class="btn-limpiar" onclick="limpiarPedido()">Vaciar</button>
+      <div class="hero-features">
+        <div class="feature-pill">🔥 100% Horneadas</div>
+        <div class="feature-pill">🥩 Cortes Premium</div>
+        <div class="feature-pill">⚡ Delivery Inmediato</div>
       </div>
+    </div>
+  </section>
 
-      <!-- SELECTOR DE MÉTODO DE PAGO -->
+  <!-- LISTADO DINÁMICO DE EMPANADAS -->
+  <section class="section-menu" id="menu">
+    <div class="menu-header">
       <div>
-        <div class="opciones-titulo">Método de pago:</div>
-        <div class="grid-pagos">
-          <button type="button" class="btn-pago activo" onclick="seleccionarPago('Efectivo', this)">💵 Efectivo</button>
-          <button type="button" class="btn-pago" onclick="seleccionarPago('Yape', this)">🟣 Yape</button>
-          <button type="button" class="btn-pago" onclick="seleccionarPago('Plin', this)">🔵 Plin</button>
-          <button type="button" class="btn-pago" onclick="seleccionarPago('Transferencia', this)">🏦 Transf.</button>
+        <h3>Nuestras Variedades</h3>
+        <p style="font-size: 13px; color: #78716c;">Elige tus favoritas y envíanos tu orden con geolocalización directa.</p>
+      </div>
+      <button onclick="limpiarCarrito()" style="background:none; border:none; color: var(--primary); font-weight:700; cursor:pointer; font-size:13px;">
+        Restablecer selección
+      </button>
+    </div>
+
+    <div class="grid-empanadas" id="contenedorEmpanadas">
+      <!-- Se genera dinámicamente desde JavaScript -->
+    </div>
+  </section>
+
+  <!-- BARRA DE CHECKOUT FLOTANTE -->
+  <div class="cart-bar" id="cartBar">
+    <div class="cart-inner">
+      <div class="cart-summary">
+        <span class="cart-count" id="cartCount">0 empanadas seleccionadas</span>
+        <span class="cart-total" id="cartTotal">Total: S/ 0.00</span>
+      </div>
+
+      <!-- FORMA DE PAGO -->
+      <div>
+        <div class="payment-title">Método de pago:</div>
+        <div class="grid-payments">
+          <button type="button" class="btn-pay-option active" onclick="elegirPago('Efectivo', this)">💵 Efectivo</button>
+          <button type="button" class="btn-pay-option" onclick="elegirPago('Yape', this)">🟣 Yape</button>
+          <button type="button" class="btn-pay-option" onclick="elegirPago('Plin', this)">🔵 Plin</button>
+          <button type="button" class="btn-pay-option" onclick="elegirPago('Transferencia', this)">🏦 Transf.</button>
         </div>
       </div>
 
-      <!-- GEOLOCALIZACIÓN DEL CLIENTE -->
-      <div class="seccion-ubicacion">
-        <button type="button" class="btn-geo" onclick="obtenerUbicacion()">📍 Activar mi ubicación</button>
-        <span class="estado-geo" id="textoUbicacion">Pulsa para enviar la dirección exacta de entrega</span>
+      <!-- GEOLOCALIZACIÓN -->
+      <div class="geo-box">
+        <button type="button" class="btn-geo" onclick="capturarGPS()">📍 Activar mi ubicación</button>
+        <span class="geo-status" id="geoStatus">Envía tus coordenadas para la entrega exacta a domicilio</span>
       </div>
 
-      <!-- BOTÓN DE ENVÍO DIRECTO A TU WHATSAPP -->
-      <button class="btn-wsp" onclick="enviarPedido()">
-        <span>Confirmar Pedido por WhatsApp</span>
+      <!-- CONFIRMAR POR WHATSAPP -->
+      <button class="btn-order-wsp" onclick="enviarPedidoWhatsApp()">
+        <span>Confirmar Pedido por WhatsApp</span> 💬
       </button>
+    </div>
+  </div>
 
+  <!-- MODAL DE INICIO DE SESIÓN ADMIN -->
+  <div class="modal-overlay" id="modalLogin">
+    <div class="modal-box">
+      <button class="btn-close-modal" onclick="cerrarModales()">&times;</button>
+      <h3>Acceso de Administrador</h3>
+      <p class="modal-sub">Ingresa para editar empanadas, precios e imágenes.</p>
+      
+      <form onsubmit="autenticarAdmin(event)">
+        <div class="form-group">
+          <label>Usuario</label>
+          <input type="text" id="adminUser" required placeholder="admin">
+        </div>
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="password" id="adminPass" required placeholder="••••••••">
+        </div>
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 12px;">
+          Credenciales por defecto: <strong>admin</strong> / <strong>regocijo123</strong>
+        </div>
+        <button type="submit" class="btn-modal-action">Ingresar al Dashboard</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL DASHBOARD ADMIN -->
+  <div class="modal-overlay" id="modalDashboard">
+    <div class="modal-box wide">
+      <button class="btn-close-modal" onclick="cerrarModales()">&times;</button>
+      <h3>Panel de Control - Empanadas Regocijo</h3>
+      <p class="modal-sub">Modifica nombres, precios, fotos y descripciones. Los cambios se reflejarán de inmediato.</p>
+
+      <table class="dashboard-table">
+        <thead>
+          <tr>
+            <th style="width: 16%;">Nombre</th>
+            <th style="width: 12%;">Precio (S/)</th>
+            <th style="width: 32%;">Descripción</th>
+            <th style="width: 25%;">URL Imagen</th>
+            <th style="width: 15%;">Acción</th>
+          </tr>
+        </thead>
+        <tbody id="tablaDashboardBody">
+          <!-- Filas de edición generadas por JS -->
+        </tbody>
+      </table>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px;">
+        <button class="btn-table-action" style="background:#64748b;" onclick="restablecerMenuOriginal()">Restablecer Todo</button>
+        <button class="btn-table-action" style="background:#0f172a;" onclick="cerrarModales()">Cerrar Panel</button>
+      </div>
     </div>
   </div>
 
   <script>
-    // Tu número configurado con código de país Perú (51)
+    // CONFIGURACIÓN OFICIAL DE CONTACTO
     const WHATSAPP_NUMERO = "51969773064";
 
+    // MENÚ POR DEFECTO
+    const menuInicial = [
+      {
+        id: "emp-1",
+        nombre: "Carne Clásica Cortada",
+        tag: "Favorita de la casa",
+        descripcion: "Lomo fino trozado a cuchillo, cebolla caramelizada, huevo duro, aceituna y toque andino de especias.",
+        precio: 6.50,
+        imagen: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: "emp-2",
+        nombre: "Ají de Gallina",
+        tag: "Súper Jugosa",
+        descripcion: "Cremoso guiso tradicional con pechuga deshilachada, ají amarillo aromático, queso paria y finas especias.",
+        precio: 6.50,
+        imagen: "https://images.unsplash.com/photo-1608039829572-78524f79c4c7?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: "emp-3",
+        nombre: "Queso Andino & Mozzarella",
+        tag: "Queso Fundido",
+        descripcion: "Combinación cremosa de queso andino madurado con mozzarella y orégano fresco del valle sagrado.",
+        precio: 6.00,
+        imagen: "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: "emp-4",
+        nombre: "Champiñones al Ajillo",
+        tag: "Especial",
+        descripcion: "Salteado de champiñones frescos al vino blanco, cebolla glaseada, ajo suave y queso fundido.",
+        precio: 7.00,
+        imagen: "https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?auto=format&fit=crop&w=600&q=80"
+      }
+    ];
+
+    // CARGAR PRODUCTOS DESDE LOCALSTORAGE O DEFAULT
+    let catalogo = JSON.parse(localStorage.getItem('regocijo_menu')) || menuInicial;
+
+    // ESTADO DEL PEDIDO
     const pedido = {};
     let metodoPago = "Efectivo";
-    let ubicacionLink = "";
+    let ubicacionUrl = "";
+    let esAdminAutenticado = false;
 
-    function sumar(producto, precio) {
-      if (!pedido[producto]) {
-        pedido[producto] = { cant: 0, precio: precio };
-      }
-      pedido[producto].cant += 1;
-      actualizarVista();
+    // RENDERIZAR MENÚ AL CLIENTE
+    function renderizarMenu() {
+      const contenedor = document.getElementById('contenedorEmpanadas');
+      contenedor.innerHTML = '';
+
+      catalogo.forEach(item => {
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="card-img-wrapper">
+            <span class="card-tag">${item.tag || 'Artesanal'}</span>
+            <img src="${item.imagen}" alt="${item.nombre}">
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">${item.nombre}</h4>
+            <p class="card-desc">${item.descripcion}</p>
+            <div class="card-footer">
+              <span class="price">S/ ${parseFloat(item.precio).toFixed(2)}</span>
+              <button class="btn-add" onclick="agregarAlPedido('${item.id}')">+ Agregar</button>
+            </div>
+          </div>
+        `;
+        contenedor.appendChild(card);
+      });
     }
 
-    function limpiarPedido() {
-      for (let k in pedido) {
-        delete pedido[k];
+    // GESTIÓN DEL CARRITO
+    function agregarAlPedido(id) {
+      const prod = catalogo.find(p => p.id === id);
+      if (!prod) return;
+
+      if (!pedido[id]) {
+        pedido[id] = { nombre: prod.nombre, precio: prod.precio, cantidad: 0 };
       }
-      actualizarVista();
+      pedido[id].cantidad += 1;
+      // Actualizar precio en caso haya cambiado en admin
+      pedido[id].precio = prod.precio;
+      pedido[id].nombre = prod.nombre;
+      actualizarBarraPedido();
     }
 
-    function seleccionarPago(metodo, boton) {
+    function limpiarCarrito() {
+      for (const k in pedido) delete pedido[k];
+      actualizarBarraPedido();
+    }
+
+    function actualizarBarraPedido() {
+      let unidades = 0;
+      let total = 0;
+
+      for (const k in pedido) {
+        unidades += pedido[k].cantidad;
+        total += pedido[k].cantidad * pedido[k].precio;
+      }
+
+      const cartBar = document.getElementById('cartBar');
+      if (unidades > 0) {
+        cartBar.style.display = 'block';
+        document.getElementById('cartCount').innerText = `${unidades} empanada${unidades === 1 ? '' : 's'} seleccionada${unidades === 1 ? '' : 's'}`;
+        document.getElementById('cartTotal').innerText = `Total: S/ ${total.toFixed(2)}`;
+      } else {
+        cartBar.style.display = 'none';
+      }
+    }
+
+    function elegirPago(metodo, boton) {
       metodoPago = metodo;
-      const botones = document.querySelectorAll('.btn-pago');
-      botones.forEach(btn => btn.classList.remove('activo'));
-      boton.classList.add('activo');
+      document.querySelectorAll('.btn-pay-option').forEach(btn => btn.classList.remove('active'));
+      boton.classList.add('active');
     }
 
-    function obtenerUbicacion() {
-      const estado = document.getElementById('textoUbicacion');
+    // CAPTURA DE GEOLOCALIZACIÓN GPS
+    function capturarGPS() {
+      const geoStatus = document.getElementById('geoStatus');
 
       if (!navigator.geolocation) {
-        estado.innerText = "Tu navegador no soporta geolocalización.";
+        geoStatus.innerText = "Navegador sin soporte de GPS.";
         return;
       }
 
-      estado.innerText = "Obteniendo coordenadas GPS...";
+      geoStatus.innerText = "Obteniendo coordenadas GPS en tiempo real...";
 
       navigator.geolocation.getCurrentPosition(
-        (posicion) => {
-          const lat = posicion.coords.latitude;
-          const lon = posicion.coords.longitude;
-          ubicacionLink = `https://www.google.com/maps?q=${lat},${lon}`;
-          estado.innerText = "✔ Ubicación lista para enviar";
-          estado.classList.add('exito');
+        (pos) => {
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+          ubicacionUrl = `https://www.google.com/maps?q=${lat},${lon}`;
+          geoStatus.innerText = "✔ Ubicación obtenida correctamente";
+          geoStatus.classList.add('ready');
         },
-        (error) => {
-          ubicacionLink = "";
-          estado.classList.remove('exito');
-          if (error.code === error.PERMISSION_DENIED) {
-            estado.innerText = "Permiso denegado. Puedes escribir tu dirección en WhatsApp.";
-          } else {
-            estado.innerText = "No se pudo obtener el GPS. Escribe tu dirección al enviar.";
-          }
+        (err) => {
+          ubicacionUrl = "";
+          geoStatus.classList.remove('ready');
+          geoStatus.innerText = "No se obtuvo GPS (escribe tu dirección al enviar).";
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     }
 
-    function actualizarVista() {
-      let unidades = 0;
-      let total = 0;
-
-      for (let k in pedido) {
-        unidades += pedido[k].cant;
-        total += pedido[k].cant * pedido[k].precio;
-      }
-
-      const barra = document.getElementById('barra');
-      if (unidades > 0) {
-        barra.style.display = 'block';
-        document.getElementById('cantTotal').innerText = `${unidades} empanada${unidades === 1 ? '' : 's'}`;
-        document.getElementById('montoTotal').innerText = `Total: S/ ${total.toFixed(2)}`;
-      } else {
-        barra.style.display = 'none';
-      }
-    }
-
-    function enviarPedido() {
-      let unidades = 0;
+    // REDIRECCIÓN A WHATSAPP
+    function enviarPedidoWhatsApp() {
       let total = 0;
       let detalle = "";
 
-      for (let k in pedido) {
-        let sub = pedido[k].cant * pedido[k].precio;
-        detalle += `• ${pedido[k].cant}x ${k} (S/ ${sub.toFixed(2)})%0A`;
-        unidades += pedido[k].cant;
+      for (const k in pedido) {
+        const item = pedido[k];
+        const sub = item.cantidad * item.precio;
+        detalle += `• ${item.cantidad}x ${item.nombre} (S/ ${sub.toFixed(2)})%0A`;
         total += sub;
       }
 
-      if (unidades === 0) {
-        alert("Por favor agrega al menos una empanada al pedido.");
-        return;
-      }
-
-      let mensaje = `*¡Hola Empanadas Regocijo! Deseo realizar el siguiente pedido:*%0A%0A`;
-      mensaje += `*Detalle de la orden:*%0A${detalle}%0A`;
+      let mensaje = `*¡Hola Empanadas Regocijo! Deseo hacer un pedido:*%0A%0A`;
+      mensaje += `*Detalle:*%0A${detalle}%0A`;
       mensaje += `*Total a pagar:* S/ ${total.toFixed(2)}%0A`;
-      mensaje += `*Forma de pago:* ${metodoPago}%0A`;
+      mensaje += `*Método de pago:* ${metodoPago}%0A`;
 
-      if (ubicacionLink) {
-        mensaje += `*Ubicación de entrega:* ${ubicacionLink}%0A`;
+      if (ubicacionUrl) {
+        mensaje += `*Ubicación GPS:* ${ubicacionUrl}%0A`;
       } else {
-        mensaje += `*Ubicación:* (Por favor indicar dirección de entrega)%0A`;
+        mensaje += `*Dirección:* (Por favor indicar dirección de entrega)%0A`;
       }
 
-      mensaje += `%0A¿Me confirman el tiempo de entrega, por favor?`;
+      mensaje += `%0A¿Me confirman tiempo estimado de entrega?`;
 
-      const url = `https://wa.me/${WHATSAPP_NUMERO}?text=${mensaje}`;
-      window.open(url, "_blank");
+      window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${mensaje}`, '_blank');
     }
+
+    // MODALES Y DASHBOARD ADMIN
+    function abrirModalAdmin() {
+      if (esAdminAutenticado) {
+        mostrarDashboard();
+      } else {
+        document.getElementById('modalLogin').style.display = 'flex';
+      }
+    }
+
+    function cerrarModales() {
+      document.getElementById('modalLogin').style.display = 'none';
+      document.getElementById('modalDashboard').style.display = 'none';
+    }
+
+    function autenticarAdmin(e) {
+      e.preventDefault();
+      const u = document.getElementById('adminUser').value.trim();
+      const p = document.getElementById('adminPass').value.trim();
+
+      // Credenciales fijas
+      if (u === 'admin' && p === 'regocijo123') {
+        esAdminAutenticado = true;
+        document.getElementById('modalLogin').style.display = 'none';
+        document.getElementById('btnAdminTrigger').innerText = "⚙️ Panel Admin";
+        mostrarDashboard();
+      } else {
+        alert("Credenciales incorrectas. Verifica usuario y contraseña.");
+      }
+    }
+
+    function mostrarDashboard() {
+      const tbody = document.getElementById('tablaDashboardBody');
+      tbody.innerHTML = '';
+
+      catalogo.forEach((item, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><input type="text" id="edit-nom-${index}" value="${item.nombre}"></td>
+          <td><input type="number" step="0.5" id="edit-pre-${index}" value="${item.precio}"></td>
+          <td><input type="text" id="edit-desc-${index}" value="${item.descripcion}"></td>
+          <td><input type="text" id="edit-img-${index}" value="${item.imagen}"></td>
+          <td>
+            <button class="btn-table-action" onclick="guardarCambioFila(${index})">Guardar</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('modalDashboard').style.display = 'flex';
+    }
+
+    function guardarCambioFila(index) {
+      catalogo[index].nombre = document.getElementById(`edit-nom-${index}`).value;
+      catalogo[index].precio = parseFloat(document.getElementById(`edit-pre-${index}`).value) || 0;
+      catalogo[index].descripcion = document.getElementById(`edit-desc-${index}`).value;
+      catalogo[index].imagen = document.getElementById(`edit-img-${index}`).value;
+
+      localStorage.setItem('regocijo_menu', JSON.stringify(catalogo));
+      renderizarMenu();
+      alert(`Empanada "${catalogo[index].nombre}" actualizada con éxito.`);
+    }
+
+    function restablecerMenuOriginal() {
+      if (confirm("¿Deseas restablecer los precios y fotos originales?")) {
+        catalogo = JSON.parse(JSON.stringify(menuInicial));
+        localStorage.setItem('regocijo_menu', JSON.stringify(catalogo));
+        renderizarMenu();
+        mostrarDashboard();
+      }
+    }
+
+    // Inicializar catálogo al cargar
+    renderizarMenu();
   </script>
 </body>
 </html>
