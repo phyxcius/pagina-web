@@ -1,4 +1,4 @@
-
+Aquí tienes el código completo en un único archivo HTML. Se añadió el botón "🗑️ Vaciar pedido" directamente dentro del modal del carrito (al lado del título de las empanadas seleccionadas) con confirmación previa para limpiar la orden al instante si el cliente se equivoca y desea empezar de nuevo:
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -363,7 +363,7 @@
       background: var(--primary);
     }
 
-    /* GLOBITO FLOTANTE AZUL PEQUEÑO (INFERIOR DERECHA) */
+    /* GLOBITO FLOTANTE AZUL PEQUEÑO */
     .chat-bubble-btn {
       position: fixed;
       bottom: 24px;
@@ -411,7 +411,7 @@
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
-    /* MODAL DE CHECKOUT QUE SE ABRE AL TOCAR EL GLOBITO */
+    /* MODAL DE CHECKOUT */
     .cart-modal-overlay {
       display: none;
       position: fixed;
@@ -473,6 +473,30 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
+    }
+
+    .cart-header-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .btn-vaciar-cart {
+      background: none;
+      border: none;
+      color: #dc2626;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      text-decoration: underline;
+    }
+
+    .btn-vaciar-cart:hover {
+      color: #b91c1c;
     }
 
     .cart-items-box {
@@ -545,7 +569,6 @@
       font-weight: 800;
       color: #64748b;
       letter-spacing: 0.5px;
-      margin-bottom: 6px;
     }
 
     .grid-payments {
@@ -667,7 +690,7 @@
       }
     }
 
-    /* MODALES & DASHBOARD */
+    /* DASHBOARD Y MODAL ADMIN */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -894,9 +917,6 @@
         <h3>Nuestras Variedades</h3>
         <p style="font-size: 13px; color: #78716c;">Elige tus empanadas y agrégalas para armar tu pedido.</p>
       </div>
-      <button onclick="limpiarCarrito()" style="background:none; border:none; color: var(--primary); font-weight:700; cursor:pointer; font-size:13px;">
-        Vaciar Pedido
-      </button>
     </div>
 
     <div class="grid-empanadas" id="contenedorEmpanadas"></div>
@@ -920,13 +940,19 @@
       </div>
 
       <div class="cart-modal-body">
+        
         <div>
-          <div class="popup-section-label">Empanadas seleccionadas:</div>
+          <div class="cart-header-actions">
+            <span class="popup-section-label">Empanadas seleccionadas:</span>
+            <button type="button" class="btn-vaciar-cart" onclick="vaciarPedidoConConfirmacion()">
+              🗑️ Vaciar pedido
+            </button>
+          </div>
           <div class="cart-items-box" id="popupItemsList"></div>
         </div>
 
         <div>
-          <div class="popup-section-label">Forma de Pago:</div>
+          <div class="popup-section-label" style="margin-bottom:6px;">Forma de Pago:</div>
           <div class="grid-payments">
             <button type="button" class="btn-pay-option active" onclick="elegirPago('Efectivo', this)">💵 Efectivo</button>
             <button type="button" class="btn-pay-option" onclick="elegirPago('Yape', this)">🟣 Yape</button>
@@ -936,7 +962,7 @@
         </div>
 
         <div>
-          <div class="popup-section-label">Lugar de Entrega:</div>
+          <div class="popup-section-label" style="margin-bottom:6px;">Lugar de Entrega:</div>
           <div class="geo-box">
             <button type="button" class="btn-geo" onclick="capturarGPSCliente()">📍 Activar mi ubicación exacta</button>
             <span class="geo-status" id="geoStatus">Envía tus coordenadas para la entrega directa</span>
@@ -1285,9 +1311,14 @@
       actualizarVistaPopup();
     }
 
-    function limpiarCarrito() {
-      for (const k in pedido) delete pedido[k];
-      actualizarVistaPopup();
+    function vaciarPedidoConConfirmacion() {
+      const totalKeys = Object.keys(pedido).length;
+      if (totalKeys === 0) return;
+
+      if (confirm("¿Estás seguro de que deseas vaciar tu carrito para ordenar de nuevo?")) {
+        for (const k in pedido) delete pedido[k];
+        actualizarVistaPopup();
+      }
     }
 
     function abrirModalCarrito() {
@@ -1313,7 +1344,7 @@
       const keys = Object.keys(pedido);
 
       if (keys.length === 0) {
-        listContainer.innerHTML = `<div style="text-align:center; color:#94a3b8; padding:12px; font-size:12px;">Tu pedido está vacío. Elige tus empanadas del menú.</div>`;
+        listContainer.innerHTML = `<div style="text-align:center; color:#94a3b8; padding:16px 0; font-size:13px;">Tu pedido está vacío. Elige tus empanadas del menú.</div>`;
       } else {
         keys.forEach(k => {
           const item = pedido[k];
@@ -1339,7 +1370,7 @@
         });
       }
 
-      // Actualizar el número dentro del globito azul y el total
+      // Actualizar número en el globito azul flotante y monto total
       document.getElementById('badgeContador').innerText = `${unidades}`;
       document.getElementById('cartTotalMonto').innerText = `S/ ${total.toFixed(2)}`;
     }
@@ -1374,7 +1405,7 @@
       );
     }
 
-    // ENVÍO DE PEDIDO A WHATSAPP
+    // ENVÍO DE PEDIDO A WHATSAPP CON EL FORMATO EXACTO
     function enviarPedidoWhatsApp() {
       const keys = Object.keys(pedido);
       if (keys.length === 0) {
@@ -1427,7 +1458,6 @@
       localStorage.setItem('regocijo_ventas', JSON.stringify(registroVentas));
       dibujarVentasEnMapa();
 
-      // Formato solicitado
       let mensaje = `*¡Hola Empanadas Regocijo! Deseo hacer un pedido:*\n\n`;
       mensaje += `*Detalle:*\n${detalleTexto}\n`;
       mensaje += `*Total a pagar:* S/ ${total.toFixed(2)}\n`;
@@ -1444,11 +1474,12 @@
       const url = `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensaje)}`;
       window.open(url, '_blank');
       
-      limpiarCarrito();
+      for (const k in pedido) delete pedido[k];
+      actualizarVistaPopup();
       cerrarModalCarrito();
     }
 
-    // ADMINISTRACIÓN & DASHBOARD
+    // PANEL ADMIN
     function abrirModalAdmin() {
       if (esAdminAutenticado) {
         mostrarDashboard();
